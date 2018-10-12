@@ -45,3 +45,4 @@ Thumbs.db
 
 # Ignore Rider
 Assets/Plugins/Editor/JetBrains*
+*.meta
