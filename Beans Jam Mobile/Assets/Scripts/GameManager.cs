@@ -115,12 +115,12 @@ public class GameManager : MonoBehaviour
 			RaycastHit hit;
 			var touchedObj = ReturnClickedObject(out hit);
 
-			if (touchedObj.CompareTag("Player"))
-			{
-				//Set the head position to the mouse position
-				_dinoHead.transform.position = new Vector3(0.0f, Camera.main.ScreenToWorldPoint(Input.mousePosition).y,
-					Camera.main.ScreenToWorldPoint(Input.mousePosition).z);
-			}
+			//if (touchedObj.CompareTag("Player"))
+			//{
+			//	//Set the head position to the mouse position
+			//	_dinoHead.transform.position = new Vector3(0.0f, Camera.main.ScreenToWorldPoint(Input.mousePosition).y,
+			//		Camera.main.ScreenToWorldPoint(Input.mousePosition).z);
+			//}
 
 			foreach (var particleSystem in _bloodSpatters)
 			{

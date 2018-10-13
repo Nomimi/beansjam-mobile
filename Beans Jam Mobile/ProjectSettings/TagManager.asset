@@ -9,6 +9,7 @@ TagManager:
   - Killbox
   - GameOverPanel
   - Note
+  - GameOverText
   layers:
   - Default
   - TransparentFX
