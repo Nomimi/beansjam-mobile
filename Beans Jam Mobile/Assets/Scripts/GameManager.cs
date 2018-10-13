@@ -19,13 +19,17 @@ public class GameManager : MonoBehaviour
 
 	private GameObject _spawnArea;
 
+	private GameObject _UIController;
+
+	private GameObject _noteHitArea;
+
 	private float _nextActionTime = 0.0f;
+
+	private Image _gameOverPanel;
 
 	private ParticleSystem[] _bloodSpatters;
 
 	private Text _gameOverText;
-
-	private Image _gameOverPanel;
 
 	#endregion Members
 
@@ -40,6 +44,8 @@ public class GameManager : MonoBehaviour
 	public int BluesGoal;
 
 	public bool Running;
+
+	public float missedNotePenalty;
 
 	public float MeatbagSpawnProbability;
 
@@ -62,6 +68,8 @@ public class GameManager : MonoBehaviour
 		Color c = _gameOverPanel.color;
 		c.a = 0;
 		_gameOverPanel.color = c;
+		_noteHitArea = GameObject.FindGameObjectWithTag("NoteHitArea");
+		_UIController = GameObject.FindGameObjectWithTag("UIController");
 
 		StartCoroutine("ApplyHunger");
 	}
@@ -106,29 +114,39 @@ public class GameManager : MonoBehaviour
 		{
 			RaycastHit hit;
 			var touchedObj = ReturnClickedObject(out hit);
-			if (touchedObj != null)
-			{
-				if (touchedObj.CompareTag("Player"))
-				{
-					//Set the head position to the mouse position
-					//_dinoHead.transform.position = new Vector3(Camera.main.ScreenToWorldPoint(Input.mousePosition).y, 0,
-					//	Camera.main.ScreenToWorldPoint(Input.mousePosition).z);
-				}
 
-				if (touchedObj.CompareTag("Note"))
-				{
-					// check Note position offset from center
-					RectTransform tf = touchedObj.GetComponent<RectTransform>();
-					int points = 1000 - (int)(tf.sizeDelta.x * tf.sizeDelta.x);
-				}
+			if (touchedObj.CompareTag("Player"))
+			{
+				//Set the head position to the mouse position
+				_dinoHead.transform.position = new Vector3(0.0f, Camera.main.ScreenToWorldPoint(Input.mousePosition).y,
+					Camera.main.ScreenToWorldPoint(Input.mousePosition).z);
 			}
-			#endregion InputHandling
 
 			foreach (var particleSystem in _bloodSpatters)
 			{
 				particleSystem.Play();
 			}
+
+			if (touchedObj.CompareTag("Note"))
+			{
+				// check Note position offset from center
+				float points;
+				RectTransform tf = touchedObj.GetComponent<RectTransform>();
+				float x = System.Math.Abs(tf.sizeDelta.x);
+				if (tf.sizeDelta.x / 2 < x)
+					points = -missedNotePenalty;
+				else
+				{
+					if (x == 0)
+						x = 0.001f;
+					points = 1 / mapNumber(x, 0, tf.sizeDelta.x, 0, 1); //remap distance to 0-1
+				}
+				float percentage = BluesGoal / 100 * points;
+				_UIController.GetComponent<GameUiScript>().IncreaseBlues(percentage); //Punkte von 0-1000
+			}
 		}
+
+		#endregion InputHandling
 	}
 
 	//Method to Return Clicked Object
@@ -159,17 +177,14 @@ public class GameManager : MonoBehaviour
 	{
 		for (float i = 100; i >= 0; i -= Hunger)
 		{
-			Saturation -= Hunger;
-			i = Saturation;
-			// TODO set UI 
+			i = Saturation -= Hunger;
+			_UIController.GetComponent<GameUiScript>().setEnergyPercentage(i);
 			// TODO set Dino Model
 			yield return null;
 		}
 		// i >= 0
 		Running = false;
 		// Load Game-Over Screen
-		_gameOverText.CrossFadeAlpha(1f, 2f, true);
-		StartCoroutine("TransitionToGameOver");
 	}
 
 	void OnCollisionEnter(Collider c)
@@ -195,6 +210,16 @@ public class GameManager : MonoBehaviour
 			// Spawn right
 			spawnPoint += _spawnArea.transform.right * SpawnOffset;
 		}
+
+		//if (Random.value < 0.5f)
+		//{
+		//	spawnPoint -= _spawnArea.transform.forward * 0.4f;
+		//}
+		//else
+		//{
+		//	spawnPoint += _spawnArea.transform.forward * 0.4f;
+		//}
+
 		return spawnPoint;
 	}
 
@@ -204,7 +229,7 @@ public class GameManager : MonoBehaviour
 	}
 
 	IEnumerator TransitionToGameOver()
-	{ 
+	{
 		Color c = _gameOverPanel.color;
 		for (float i = 0f; i <= 2; i += 0.2f)
 		{
@@ -212,5 +237,11 @@ public class GameManager : MonoBehaviour
 			_gameOverPanel.color = c;
 			yield return new WaitForSeconds(.1f);
 		}
+	}
+
+
+	float mapNumber(float s, float a1, float a2, float b1, float b2) //maps value s from one range to the other
+	{
+		return b1 + (s - a1) * (b2 - b1) / (a2 - a1);
 	}
 }

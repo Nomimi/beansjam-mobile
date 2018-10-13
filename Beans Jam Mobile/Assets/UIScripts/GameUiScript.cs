@@ -131,7 +131,7 @@ public class GameUiScript : MonoBehaviour
             crtTimeStamp.ms = Int32.Parse(splitTime[2]);
             timeStamps.Enqueue(crtTimeStamp);         
         }
-        songFile.Play();
+        //songFile.Play();
     }   
     public void spawnNote(float speed)
     {
@@ -139,7 +139,7 @@ public class GameUiScript : MonoBehaviour
         float ypos = noteBackgroundArea.position.y;
         float zpos = noteBackgroundArea.position.z;
 
-        (Instantiate(notePrefab, new Vector3(xpos, ypos, zpos), Quaternion.identity, canvas.transform) as GameObject).GetComponent<NoteBehavior>().InitNoteSpeed(speed);
+        (Instantiate(notePrefab, new Vector3(xpos, ypos, zpos), Quaternion.identity, noteBackgroundArea.transform) as GameObject).GetComponent<NoteBehavior>().InitNoteSpeed(speed);
     }
 
     public void IncreaseEnergy(float percentageToAdd)
@@ -163,6 +163,16 @@ public class GameUiScript : MonoBehaviour
 
         bluesBar.sizeDelta = new Vector2(perc * onePercentSize, bluesBar.sizeDelta.y);
         BluesCurrentPerc = perc;
+    }
+    public void setEnergyPercentage(float setPercentage)
+    {        
+        if (setPercentage > 100f)
+            setPercentage = 100f;
+        else if (setPercentage < 0f)
+            setPercentage = 0f;
+
+        energyBar.sizeDelta = new Vector2(setPercentage * onePercentSize, energyBar.sizeDelta.y);
+        EnergyCurrentPerc = setPercentage;
     }
 }
 
