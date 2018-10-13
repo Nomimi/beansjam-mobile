@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Security.Policy;
 using UnityEngine;
+using UnityEngine.PostProcessing;
+using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
@@ -19,6 +21,10 @@ public class GameManager : MonoBehaviour
 	private GameObject _spawnArea;
 
 	private float _nextActionTime = 0.0f;
+
+	private ParticleSystem[] _bloodSpatters;
+
+	private Text _gameOverText;
 
 	#endregion Members
 
@@ -48,6 +54,9 @@ public class GameManager : MonoBehaviour
 		_dinoHead = GameObject.FindGameObjectWithTag("Player");
 		_meatBags = new List<GameObject>();
 		_spawnArea = GameObject.FindGameObjectWithTag("Spawn");
+		_bloodSpatters = GetComponentsInChildren<ParticleSystem>();
+		_gameOverText = GameObject.FindGameObjectWithTag("GameOverPanel").GetComponent<Text>();
+		_gameOverText.CrossFadeAlpha(0f, 0f, true);
 
 		StartCoroutine("ApplyHunger");
 	}
@@ -92,18 +101,25 @@ public class GameManager : MonoBehaviour
 		{
 			RaycastHit hit;
 			var touchedObj = ReturnClickedObject(out hit);
-
-			if (touchedObj.CompareTag("Player"))
+			if (touchedObj != null)
 			{
-				//Set the head position to the mouse position
-				//_dinoHead.transform.position = new Vector3(Camera.main.ScreenToWorldPoint(Input.mousePosition).y, 0,
-				//	Camera.main.ScreenToWorldPoint(Input.mousePosition).z);
+				if (touchedObj.CompareTag("Player"))
+				{
+					//Set the head position to the mouse position
+					//_dinoHead.transform.position = new Vector3(Camera.main.ScreenToWorldPoint(Input.mousePosition).y, 0,
+					//	Camera.main.ScreenToWorldPoint(Input.mousePosition).z);
+				}
+
+				//if (touchedObj.CompareTag("Note"))
+				//{
+				//	// See if Note is in Circle
+				//}
 			}
 
-			//if (touchedObj.CompareTag("Note"))
-			//{
-			//	// See if Note is in Circle
-			//}
+			foreach (var particleSystem in _bloodSpatters)
+			{
+				particleSystem.Play();
+			}
 		}
 
 		#endregion InputHandling
@@ -147,7 +163,8 @@ public class GameManager : MonoBehaviour
 		// i >= 0
 		Running = false;
 		// Load Game-Over Screen
-		StartCoroutine("TransitToGameOver");
+		_gameOverText.CrossFadeAlpha(1f, 2f, true);
+		StartCoroutine("TransitionToGameOver");
 	}
 
 	void OnCollisionEnter(Collider c)
@@ -181,16 +198,16 @@ public class GameManager : MonoBehaviour
 		_meatBags.Remove(meatBag);
 	}
 
-	//IEnumerator TransitToGameOver()
-	//{
-	//	var gameOverText = GameObject.FindGameObjectWithTag("GameOverPanel");
-	//	for (float i = 100; i >= 0; i -= 0.1f)
-	//	{
-	//		var cam = Camera.main;
-	//		cam.depth = i;
-	//		game
-	//		yield return null;
-	//	}
-		
-	//}
+	IEnumerator TransitionToGameOver()
+	{
+		var cam = Camera.main;
+		for (float i = 0; i <= 150; i += 1.5f)
+		{
+
+			cam.focalLength = i;
+
+			yield return null;
+		}
+
+	}
 }
