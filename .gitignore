@@ -48,3 +48,4 @@ Thumbs.db
 Assets/Plugins/Editor/JetBrains*
 Assets/Plugins/GitHub*
 *.meta
+*.apk
