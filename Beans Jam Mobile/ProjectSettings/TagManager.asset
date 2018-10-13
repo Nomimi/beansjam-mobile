@@ -8,6 +8,7 @@ TagManager:
   - Meatbag
   - Killbox
   - GameOverPanel
+  - Note
   layers:
   - Default
   - TransparentFX

@@ -32,6 +32,8 @@ public class GameUiScript : MonoBehaviour
 
     public float noteSpeed = 20;
 
+    public AudioSource songFile;
+
     struct TimeStamp
     {
         public int min;
@@ -51,7 +53,7 @@ public class GameUiScript : MonoBehaviour
             ms = (int)milliseconds % 1000;
             if (ms > 100)
                 ms /= 10;
-        }
+        }        
         public static bool operator >=(TimeStamp t1, TimeStamp t2)
         {
             if (t1.min >= t2.min)
@@ -78,6 +80,7 @@ public class GameUiScript : MonoBehaviour
     void Start()
     {
         timingsList = new Queue<string>(new[] { "0:02:87-0:05:04", "0:06:66", "0:06:83", "0:06:99", "0:07:15-0:08:94", "0:09:46-0:10:39", "0:10:42-0:12:42", "0:13:61", "0:13:82", "0:13:94", "0:14:23 - 0:16:27", "0:17:08", "0:17:42", "0:17:71", "0:18:04" });
+        
         timeStamps = new Queue<TimeStamp>();
 
         float PercentageBarMaxWidth = barContainer.sizeDelta.x;
@@ -92,21 +95,27 @@ public class GameUiScript : MonoBehaviour
         if (Time.time > EnergyDrainTimer) {
             EnergyDrainTimer += EnergyDrainPeriod;
             IncreaseEnergy(-1);
-        }
+        }            
         if (timeStamps.Count > 0) {
-            TimeStamp now = new TimeStamp(Time.time * 1000 - startTime);
+            float width = noteBackgroundArea.sizeDelta.x / 2; // adjust to note spawnpoint
+            float offset = width * (noteSpeed * Time.deltaTime); 
+            TimeStamp now = new TimeStamp((Time.time * 1000 + offset) - startTime);                    
             if (now >= timeStamps.Peek()) {
-                timeStamps.Dequeue();
+                TimeStamp temp = timeStamps.Dequeue();
                 spawnNote(noteSpeed);
             }
+        }
+        else {
+            spawnRythm(timingsList); // loops NoteSpawn
         }
     }
     public void spawnRythm(Queue<string> rythmQueue)
     {
         startTime = Time.time * 1000;
-        while (timingsList.Count > 0) {
+        Queue<string> timingsListtemp = new Queue<string>(timingsList);
+        while (timingsListtemp.Count > 0) {
             TimeStamp crtTimeStamp = new TimeStamp();
-            string timingString = timingsList.Dequeue();
+            string timingString = timingsListtemp.Dequeue();
 
             if (timingString.Contains("-")) {
                 string[] splitStartStop = timingString.Split('-');
@@ -120,12 +129,13 @@ public class GameUiScript : MonoBehaviour
             crtTimeStamp.min = Int32.Parse(splitTime[0]);
             crtTimeStamp.sec = Int32.Parse(splitTime[1]);
             crtTimeStamp.ms = Int32.Parse(splitTime[2]);
-            timeStamps.Enqueue(crtTimeStamp);
-        }        
+            timeStamps.Enqueue(crtTimeStamp);         
+        }
+        songFile.Play();
     }   
     public void spawnNote(float speed)
     {
-        float xpos = noteBackgroundArea.position.x;
+        float xpos = noteBackgroundArea.position.x; //if tweeked check update() for time calculation
         float ypos = noteBackgroundArea.position.y;
         float zpos = noteBackgroundArea.position.z;
 
