@@ -39,9 +39,16 @@ public class MeatbahBehavior : MonoBehaviour
 		if (Time.time > _nextActionTime && _navMeshAgent.remainingDistance < 0.1)
 		{
 			_nextActionTime += Random.Range(5, 10);
-			//_navMeshAgent.destination = RandomPlaceOnPlane(transform.position);
+			if (Random.value < 0.97f)
+			{
+				_navMeshAgent.destination = RandomNavSphere(transform.position, Random.Range(0.5f, 1.5f), -1);
+			}
+			else
+			{
+				// Small chance that meatbag leaves
+				_navMeshAgent.destination = GameObject.FindGameObjectWithTag("Killbox").transform.position;
+			}
 
-			_navMeshAgent.destination = RandomNavSphere(transform.position, Random.Range(0.5f, 1.5f), -1);
 		}
 	}
 
