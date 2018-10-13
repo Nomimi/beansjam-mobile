@@ -559,13 +559,10 @@ MonoBehaviour:
   barContainer: {fileID: 1680404195}
   noteAcceptanceArea: {fileID: 1928255599}
   noteBackgroundArea: {fileID: 166949323}
-  notePrefab: {fileID: 1589040622243820, guid: 3a7bdd896334fc041a1798228b748209, type: 2}
-  canvas: {fileID: 52521302}
-  speed: 1
+  notePrefab: {fileID: 1617144151613620, guid: 831b73f466325e445a99a205bbf9808c, type: 2}
   SetEnergyBarFillPercentage: 100
   SetBluesBarFillPercentage: 100
   EnergyDrainPeriod: 1
-  noteSpeed: 20
 --- !u!1 &1522680391
 GameObject:
   m_ObjectHideFlags: 0
