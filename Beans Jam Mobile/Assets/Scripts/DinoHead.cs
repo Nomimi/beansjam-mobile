@@ -21,4 +21,8 @@ public class DragHead : MonoBehaviour
 	{
 		// TODO: Get dinosaur reference
 	}
+
+	void OnCollision(Collider c)
+	{
+	}
 }

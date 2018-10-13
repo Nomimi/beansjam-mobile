@@ -325,7 +325,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1601147498}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 46.42, y: 2.8, z: 0.84}
+  m_LocalPosition: {x: 46.5, y: 2.8, z: 0.84}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -340,9 +340,9 @@ SpringJoint:
   m_ConnectedBody: {fileID: 736451062}
   m_Anchor: {x: 0, y: 0.5, z: 0}
   m_AutoConfigureConnectedAnchor: 1
-  m_ConnectedAnchor: {x: 0, y: 0.5, z: 0.000000059604645}
+  m_ConnectedAnchor: {x: 0.08000183, y: 0.5, z: 0.000000059604645}
   serializedVersion: 2
-  m_Spring: 3.4028233e+38
+  m_Spring: 500
   m_Damper: 0
   m_MinDistance: 0
   m_MaxDistance: 0
@@ -366,7 +366,7 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 0
+  m_Constraints: 112
   m_CollisionDetection: 0
 --- !u!1 &1903805650
 GameObject:
@@ -439,7 +439,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1903805650}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 46.37, y: 3.46, z: -4.87}
+  m_LocalPosition: {x: 46.37, y: 3.46, z: -5.99}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -473,7 +473,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Hunger: 100
+  Saturation: 0
   Blues: 50
+  BluesGoal: 0
+  Running: 0
 --- !u!4 &1983329393
 Transform:
   m_ObjectHideFlags: 0

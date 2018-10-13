@@ -9,6 +9,12 @@ public class GameManager : MonoBehaviour
 
 	private GameObject _dinoHead;
 
+	private List<GameObject> _meatBags;
+
+	private GameObject _meatBagPrefab;
+
+	private GameObject _spawnArea;
+
 	#endregion Members
 
 	#region Properties
@@ -21,17 +27,53 @@ public class GameManager : MonoBehaviour
 
 	public int BluesGoal;
 
+	public bool Running;
+
+	public float MeatbagSpawnProbability;
+
 	#endregion Properties
 
 	// Use this for initialization
 	void Start()
 	{
 		_dinoHead = GameObject.FindGameObjectWithTag("Player");
+		_meatBags = new List<GameObject>();
+		_meatBagPrefab = Resources.Load("Meatbag", typeof(GameObject)) as GameObject;
+		_spawnArea = GameObject.FindGameObjectWithTag("Spawn");
+
+		StartCoroutine("ApplyHunger");
 	}
 
 	// Update is called once per frame
 	void Update()
 	{
+		#region Meatbag creation
+
+		//var creationProbability = Blues * MeatbagSpawnRate; // Note: * random?
+		var spawn = Random.value * Blues;
+		if (spawn > MeatbagSpawnProbability)
+		{
+			Vector3 spawnPoint = _spawnArea.transform.position;
+			if (Random.value < 0.5f)
+			{
+				// Spawn left
+				spawnPoint -= _spawnArea.transform.right * 0.45f;
+			}
+			else
+			{
+				// Spawn right
+				spawnPoint += _spawnArea.transform.right * 0.45f;
+			}
+			var meatBag = Instantiate(_meatBagPrefab, spawnPoint, new Quaternion());
+
+			_meatBags.Add(meatBag);
+		}
+
+		#endregion
+
+
+		#region InputHandling
+
 		if (Input.touchCount > 0)
 		{
 			foreach (var touch in Input.touches)
@@ -65,6 +107,9 @@ public class GameManager : MonoBehaviour
 				// See if Note is in Circle
 			}
 		}
+
+		#endregion InputHandling
+
 	}
 
 	//Method to Return Clicked Object
@@ -93,11 +138,25 @@ public class GameManager : MonoBehaviour
 
 	IEnumerator ApplyHunger()
 	{
-		for (float i = 100; i >= 0 ; i -= Hunger)
+		for (float i = 100; i >= 0; i -= Hunger)
 		{
-
+			i = Saturation -= Hunger;
 			// TODO set UI 
+			// TODO set Dino Model
 			yield return null;
+		}
+		// i >= 0
+		Running = false;
+		// Load Game-Over Screen
+	}
+
+	void OnCollisionEnter(Collider c)
+	{
+		if (c.CompareTag("MeatBag"))
+		{
+			Saturation += 10;
+			Destroy(c.gameObject);
+
 		}
 	}
 }
