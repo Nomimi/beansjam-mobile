@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Security.Policy;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
@@ -18,7 +19,17 @@ public class GameManager : MonoBehaviour
 
 	private GameObject _spawnArea;
 
+	private GameObject _UIController;
+
+	private GameObject _noteHitArea;
+
 	private float _nextActionTime = 0.0f;
+
+	private Image _gameOverPanel;
+
+	private ParticleSystem[] _bloodSpatters;
+
+	private Text _gameOverText;
 
 	#endregion Members
 
@@ -34,6 +45,8 @@ public class GameManager : MonoBehaviour
 
 	public bool Running;
 
+	public float missedNotePenalty;
+
 	public float MeatbagSpawnProbability;
 
 	public GameObject MeatBagPrefab;
@@ -48,6 +61,15 @@ public class GameManager : MonoBehaviour
 		_dinoHead = GameObject.FindGameObjectWithTag("Player");
 		_meatBags = new List<GameObject>();
 		_spawnArea = GameObject.FindGameObjectWithTag("Spawn");
+		_bloodSpatters = GetComponentsInChildren<ParticleSystem>();
+		_gameOverText = GameObject.FindGameObjectWithTag("GameOverText").GetComponent<Text>();
+		_gameOverText.CrossFadeAlpha(0f, 0f, true);
+		_gameOverPanel = GameObject.FindGameObjectWithTag("GameOverPanel").GetComponent<Image>();
+		Color c = _gameOverPanel.color;
+		c.a = 0;
+		_gameOverPanel.color = c;
+		_noteHitArea = GameObject.FindGameObjectWithTag("NoteHitArea");
+		_UIController = GameObject.FindGameObjectWithTag("UIController");
 
 		StartCoroutine("ApplyHunger");
 	}
@@ -93,21 +115,38 @@ public class GameManager : MonoBehaviour
 			RaycastHit hit;
 			var touchedObj = ReturnClickedObject(out hit);
 
-			if (touchedObj.CompareTag("Player"))
+			//if (touchedObj.CompareTag("Player"))
+			//{
+			//	//Set the head position to the mouse position
+			//	_dinoHead.transform.position = new Vector3(0.0f, Camera.main.ScreenToWorldPoint(Input.mousePosition).y,
+			//		Camera.main.ScreenToWorldPoint(Input.mousePosition).z);
+			//}
+
+			foreach (var particleSystem in _bloodSpatters)
 			{
-				//Set the head position to the mouse position
-				_dinoHead.transform.position = new Vector3(0.0f, Camera.main.ScreenToWorldPoint(Input.mousePosition).y,
-					Camera.main.ScreenToWorldPoint(Input.mousePosition).z);
+				particleSystem.Play();
 			}
 
-			//if (touchedObj.CompareTag("Note"))
-			//{
-			//	// See if Note is in Circle
-			//}
+			if (touchedObj.CompareTag("Note"))
+			{
+				// check Note position offset from center
+				float points;
+				RectTransform tf = touchedObj.GetComponent<RectTransform>();
+				float x = System.Math.Abs(tf.sizeDelta.x);
+				if (tf.sizeDelta.x / 2 < x)
+					points = -missedNotePenalty;
+				else
+				{
+					if (x == 0)
+						x = 0.001f;
+					points = 1 / mapNumber(x, 0, tf.sizeDelta.x, 0, 1); //remap distance to 0-1
+				}
+				float percentage = BluesGoal / 100 * points;
+				_UIController.GetComponent<GameUiScript>().IncreaseBlues(percentage); //Punkte von 0-1000
+			}
 		}
 
 		#endregion InputHandling
-
 	}
 
 	//Method to Return Clicked Object
@@ -139,7 +178,7 @@ public class GameManager : MonoBehaviour
 		for (float i = 100; i >= 0; i -= Hunger)
 		{
 			i = Saturation -= Hunger;
-			// TODO set UI 
+			_UIController.GetComponent<GameUiScript>().setEnergyPercentage(i);
 			// TODO set Dino Model
 			yield return null;
 		}
@@ -187,5 +226,22 @@ public class GameManager : MonoBehaviour
 	public void RemoveMeatbag(GameObject meatBag)
 	{
 		_meatBags.Remove(meatBag);
+	}
+
+	IEnumerator TransitionToGameOver()
+	{
+		Color c = _gameOverPanel.color;
+		for (float i = 0f; i <= 2; i += 0.2f)
+		{
+			c.a = i;
+			_gameOverPanel.color = c;
+			yield return new WaitForSeconds(.1f);
+		}
+	}
+
+
+	float mapNumber(float s, float a1, float a2, float b1, float b2) //maps value s from one range to the other
+	{
+		return b1 + (s - a1) * (b2 - b1) / (a2 - a1);
 	}
 }
