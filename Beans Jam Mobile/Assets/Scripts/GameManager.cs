@@ -38,6 +38,8 @@ public class GameManager : MonoBehaviour
 
 	public bool Running;
 
+    public float missedNotePenalty;
+
 	public float MeatbagSpawnProbability;
 
 	public GameObject MeatBagPrefab;
@@ -112,7 +114,7 @@ public class GameManager : MonoBehaviour
                 RectTransform tf = touchedObj.GetComponent<RectTransform>();
                 float x = System.Math.Abs(tf.sizeDelta.x);
                 if (tf.sizeDelta.x / 2 < x)
-                    points = -1000f;
+                    points = -missedNotePenalty;
                 else
                 {
                     if (x == 0)
