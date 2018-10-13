@@ -164,5 +164,15 @@ public class GameUiScript : MonoBehaviour
         bluesBar.sizeDelta = new Vector2(perc * onePercentSize, bluesBar.sizeDelta.y);
         BluesCurrentPerc = perc;
     }
+    public void setEnergyPercentage(float setPercentage)
+    {        
+        if (setPercentage > 100f)
+            setPercentage = 100f;
+        else if (setPercentage < 0f)
+            setPercentage = 0f;
+
+        energyBar.sizeDelta = new Vector2(setPercentage * onePercentSize, energyBar.sizeDelta.y);
+        EnergyCurrentPerc = setPercentage;
+    }
 }
 

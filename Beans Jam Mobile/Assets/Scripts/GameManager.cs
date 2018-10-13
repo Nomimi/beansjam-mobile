@@ -18,6 +18,10 @@ public class GameManager : MonoBehaviour
 
 	private GameObject _spawnArea;
 
+    private GameObject _UIController;
+
+    private GameObject _noteHitArea;
+
 	private float _nextActionTime = 0.0f;
 
 	#endregion Members
@@ -48,8 +52,10 @@ public class GameManager : MonoBehaviour
 		_dinoHead = GameObject.FindGameObjectWithTag("Player");
 		_meatBags = new List<GameObject>();
 		_spawnArea = GameObject.FindGameObjectWithTag("Spawn");
+        _noteHitArea = GameObject.FindGameObjectWithTag("NoteHitArea");
+        _UIController = GameObject.FindGameObjectWithTag("UIController");
 
-		StartCoroutine("ApplyHunger");
+        StartCoroutine("ApplyHunger");
 	}
 
 	// Update is called once per frame
@@ -102,8 +108,18 @@ public class GameManager : MonoBehaviour
 
             if (touchedObj.CompareTag("Note")) {
                 // check Note position offset from center
+                float points;
                 RectTransform tf = touchedObj.GetComponent<RectTransform>();
-                int points = 1000 - (int)(tf.sizeDelta.x * tf.sizeDelta.x );
+                float x = System.Math.Abs(tf.sizeDelta.x);
+                if (tf.sizeDelta.x / 2 < x)
+                    points = -1000f;
+                else
+                {
+                    if (x == 0)
+                        x = 0.001f;
+                    points = 1 / mapNumber(x, 0, tf.sizeDelta.x, 0, 1); //remap distance to 0-1
+                }   
+                _UIController.GetComponent<GameUiScript>().IncreaseBlues(points); //Punkte von 0-1000
             }
         }
 
@@ -140,9 +156,9 @@ public class GameManager : MonoBehaviour
 		for (float i = 100; i >= 0; i -= Hunger)
 		{
 			i = Saturation -= Hunger;
-			// TODO set UI 
-			// TODO set Dino Model
-			yield return null;
+            _UIController.GetComponent<GameUiScript>().setEnergyPercentage(i);
+            // TODO set Dino Model
+            yield return null;
 		}
 		// i >= 0
 		Running = false;
@@ -189,4 +205,10 @@ public class GameManager : MonoBehaviour
 	{
 		_meatBags.Remove(meatBag);
 	}
+
+
+    float mapNumber(float s, float a1, float a2, float b1, float b2) //maps value s from one range to the other
+    {
+        return b1 + (s - a1) * (b2 - b1) / (a2 - a1);
+    }
 }
