@@ -5,15 +5,20 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
+	#region Const
+
+	private const float SpawnOffset = 4f;
+
+	#endregion
 	#region Members
 
 	private GameObject _dinoHead;
 
 	private List<GameObject> _meatBags;
 
-	private GameObject _meatBagPrefab;
-
 	private GameObject _spawnArea;
+
+	private float _nextActionTime = 0.0f;
 
 	#endregion Members
 
@@ -31,6 +36,10 @@ public class GameManager : MonoBehaviour
 
 	public float MeatbagSpawnProbability;
 
+	public GameObject MeatBagPrefab;
+
+	public float MinSpawnTime;
+
 	#endregion Properties
 
 	// Use this for initialization
@@ -38,7 +47,6 @@ public class GameManager : MonoBehaviour
 	{
 		_dinoHead = GameObject.FindGameObjectWithTag("Player");
 		_meatBags = new List<GameObject>();
-		_meatBagPrefab = Resources.Load("Meatbag", typeof(GameObject)) as GameObject;
 		_spawnArea = GameObject.FindGameObjectWithTag("Spawn");
 
 		StartCoroutine("ApplyHunger");
@@ -50,22 +58,12 @@ public class GameManager : MonoBehaviour
 		#region Meatbag creation
 
 		//var creationProbability = Blues * MeatbagSpawnRate; // Note: * random?
-		var spawn = Random.value * Blues;
-		if (spawn > MeatbagSpawnProbability)
+		float fBlues = Blues;
+		var spawn = fBlues / 100;
+		if (Time.time > _nextActionTime && Random.value < fBlues)
 		{
-			Vector3 spawnPoint = _spawnArea.transform.position;
-			if (Random.value < 0.5f)
-			{
-				// Spawn left
-				spawnPoint -= _spawnArea.transform.right * 0.45f;
-			}
-			else
-			{
-				// Spawn right
-				spawnPoint += _spawnArea.transform.right * 0.45f;
-			}
-			var meatBag = Instantiate(_meatBagPrefab, spawnPoint, new Quaternion());
-
+			_nextActionTime += MinSpawnTime;
+			var meatBag = Instantiate(MeatBagPrefab, GetSpawnPoint(), new Quaternion());
 			_meatBags.Add(meatBag);
 		}
 
@@ -102,10 +100,10 @@ public class GameManager : MonoBehaviour
 					Camera.main.ScreenToWorldPoint(Input.mousePosition).z);
 			}
 
-			if (touchedObj.CompareTag("Note"))
-			{
-				// See if Note is in Circle
-			}
+			//if (touchedObj.CompareTag("Note"))
+			//{
+			//	// See if Note is in Circle
+			//}
 		}
 
 		#endregion InputHandling
@@ -158,5 +156,36 @@ public class GameManager : MonoBehaviour
 			Destroy(c.gameObject);
 
 		}
+	}
+
+	Vector3 GetSpawnPoint()
+	{
+		Vector3 spawnPoint = _spawnArea.transform.position;
+		if (Random.value < 0.5f)
+		{
+			// Spawn left
+			spawnPoint -= _spawnArea.transform.right * SpawnOffset;
+		}
+		else
+		{
+			// Spawn right
+			spawnPoint += _spawnArea.transform.right * SpawnOffset;
+		}
+
+		//if (Random.value < 0.5f)
+		//{
+		//	spawnPoint -= _spawnArea.transform.forward * 0.4f;
+		//}
+		//else
+		//{
+		//	spawnPoint += _spawnArea.transform.forward * 0.4f;
+		//}
+
+		return spawnPoint;
+	}
+
+	public void RemoveMeatbag(GameObject meatBag)
+	{
+		_meatBags.Remove(meatBag);
 	}
 }
