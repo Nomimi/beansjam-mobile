@@ -1063,7 +1063,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 11865a53315d824498c4da659cb8329c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Hunger: 0.05
+  Hunger: 1
   Saturation: 100
   Blues: 50
   BluesGoal: 150

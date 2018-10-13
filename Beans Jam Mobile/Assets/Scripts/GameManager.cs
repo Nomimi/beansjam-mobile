@@ -25,6 +25,8 @@ public class GameManager : MonoBehaviour
 
 	private Text _gameOverText;
 
+	private Image _gameOverPanel;
+
 	#endregion Members
 
 	#region Properties
@@ -54,8 +56,12 @@ public class GameManager : MonoBehaviour
 		_meatBags = new List<GameObject>();
 		_spawnArea = GameObject.FindGameObjectWithTag("Spawn");
 		_bloodSpatters = GetComponentsInChildren<ParticleSystem>();
-		_gameOverText = GameObject.FindGameObjectWithTag("GameOverPanel").GetComponent<Text>();
+		_gameOverText = GameObject.FindGameObjectWithTag("GameOverText").GetComponent<Text>();
 		_gameOverText.CrossFadeAlpha(0f, 0f, true);
+		_gameOverPanel = GameObject.FindGameObjectWithTag("GameOverPanel").GetComponent<Image>();
+		Color c = _gameOverPanel.color;
+		c.a = 0;
+		_gameOverPanel.color = c;
 
 		StartCoroutine("ApplyHunger");
 	}
@@ -116,13 +122,12 @@ public class GameManager : MonoBehaviour
 					int points = 1000 - (int)(tf.sizeDelta.x * tf.sizeDelta.x);
 				}
 			}
-		}
+			#endregion InputHandling
 
-		#endregion InputHandling
-
-		foreach (var particleSystem in _bloodSpatters)
-		{
-			particleSystem.Play();
+			foreach (var particleSystem in _bloodSpatters)
+			{
+				particleSystem.Play();
+			}
 		}
 	}
 
@@ -199,12 +204,13 @@ public class GameManager : MonoBehaviour
 	}
 
 	IEnumerator TransitionToGameOver()
-	{
-		var cam = Camera.main;
-		for (float i = 0; i <= 100; i += 1.5f)
+	{ 
+		Color c = _gameOverPanel.color;
+		for (float i = 0f; i <= 2; i += 0.2f)
 		{
-			cam.focalLength++; 
-			yield return null;
+			c.a = i;
+			_gameOverPanel.color = c;
+			yield return new WaitForSeconds(.1f);
 		}
 	}
 }
