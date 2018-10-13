@@ -100,11 +100,12 @@ public class GameManager : MonoBehaviour
 					Camera.main.ScreenToWorldPoint(Input.mousePosition).z);
 			}
 
-			//if (touchedObj.CompareTag("Note"))
-			//{
-			//	// See if Note is in Circle
-			//}
-		}
+            if (touchedObj.CompareTag("Note")) {
+                // check Note position offset from center
+                RectTransform tf = touchedObj.GetComponent<RectTransform>();
+                int points = 1000 - (int)(tf.sizeDelta.x * tf.sizeDelta.x );
+            }
+        }
 
 		#endregion InputHandling
 
