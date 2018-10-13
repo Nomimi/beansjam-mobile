@@ -26,17 +26,23 @@ public class GameUiScript : MonoBehaviour
     private float EnergyDrainTimer = 1f;
     public float EnergyDrainPeriod = 0.25f;
 
-    private Queue<string> timingsList; //= { 0:01:05 - 0:02:82, 0:04:58, };
+    private Queue<string> timingsList;
     private Queue<TimeStamp> timeStamps;
     private float startTime;
 
+    public float noteSpeed = 20;
+
     struct TimeStamp
-    {        
+    {
         public int min;
         public int sec;
         public int ms;
 
-        public TimeStamp(float milliseconds) : this()
+        public int minEnd;
+        public int secEnd;
+        public int msEnd;
+
+        public TimeStamp(float milliseconds) : this() // generates TimeStampFormat from milliseconds
         {
             min = (int)milliseconds / 60000;
             milliseconds -= min * 60000;
@@ -62,28 +68,22 @@ public class GameUiScript : MonoBehaviour
                         return true;
             return false;
         }
-
         public override string ToString()
         {
-            return min+":" + sec + ":" + ms;
+            return min + ":" + sec + ":" + ms;
         }
     }
 
     // Use this for initialization
     void Start()
     {
-        TimeStamp a1 = new TimeStamp(50f);
-        TimeStamp a2 = new TimeStamp(1050f);
-        TimeStamp a3 = new TimeStamp(2500f);
-        TimeStamp a4 = new TimeStamp(62500f);
+        timingsList = new Queue<string>(new[] { "0:02:87-0:05:04", "0:06:66", "0:06:83", "0:06:99", "0:07:15-0:08:94", "0:09:46-0:10:39", "0:10:42-0:12:42", "0:13:61", "0:13:82", "0:13:94", "0:14:23 - 0:16:27", "0:17:08", "0:17:42", "0:17:71", "0:18:04" });
         timeStamps = new Queue<TimeStamp>();
-        Debug.Log(a1 + "\n" );
-        Debug.Log(a2 + "\n" );
-        Debug.Log(a3 + "\n");
-        Debug.Log(a4 + "\n");
 
         float PercentageBarMaxWidth = barContainer.sizeDelta.x;
         onePercentSize = (PercentageBarMaxWidth / 100f);
+
+        spawnRythm(timingsList);
     }
 
     // Update is called once per frame
@@ -91,41 +91,45 @@ public class GameUiScript : MonoBehaviour
     {
         if (Time.time > EnergyDrainTimer) {
             EnergyDrainTimer += EnergyDrainPeriod;
-            IncreaseEnergy(-1);            
+            IncreaseEnergy(-1);
         }
-        if(timeStamps.Count > 0) {
-           // (Time.time * 1000 - startTime).ToString();
-
-           // TimeStamp now =
-          // if(( >= timeStamps.Peek())
-
+        if (timeStamps.Count > 0) {
+            TimeStamp now = new TimeStamp(Time.time * 1000 - startTime);
+            if (now >= timeStamps.Peek()) {
+                timeStamps.Dequeue();
+                spawnNote(noteSpeed);
+            }
         }
     }
-    public void spawnRythm(Queue<bool> rythmQueue)
+    public void spawnRythm(Queue<string> rythmQueue)
     {
         startTime = Time.time * 1000;
-        foreach (string timing in timingsList) {
+        while (timingsList.Count > 0) {
             TimeStamp crtTimeStamp = new TimeStamp();
-            string[] splitTime = timingsList.Dequeue().Split(':');
+            string timingString = timingsList.Dequeue();
+
+            if (timingString.Contains("-")) {
+                string[] splitStartStop = timingString.Split('-');
+                string[] splitStopTime = splitStartStop[1].Split(':');
+                crtTimeStamp.minEnd = Int32.Parse(splitStopTime[0]);
+                crtTimeStamp.secEnd = Int32.Parse(splitStopTime[1]);
+                crtTimeStamp.msEnd = Int32.Parse(splitStopTime[2]);
+                timingString = splitStartStop[0];
+            }
+            string[] splitTime = timingString.Split(':');
             crtTimeStamp.min = Int32.Parse(splitTime[0]);
             crtTimeStamp.sec = Int32.Parse(splitTime[1]);
             crtTimeStamp.ms = Int32.Parse(splitTime[2]);
             timeStamps.Enqueue(crtTimeStamp);
-        }
-        executeRythm(rythmQueue, startTime);
-    }
-    public void executeRythm(Queue<bool> rythmQueue, float startTime)
-    {
-       
-        
-    }
+        }        
+    }   
     public void spawnNote(float speed)
     {
         float xpos = noteBackgroundArea.position.x;
         float ypos = noteBackgroundArea.position.y;
         float zpos = noteBackgroundArea.position.z;
 
-        (Instantiate(notePrefab, new Vector3(xpos, ypos, zpos), Quaternion.identity, canvas.transform) as GameObject).GetComponent<NoteBehavior>().InitNoteSpeed(speed); 
+        (Instantiate(notePrefab, new Vector3(xpos, ypos, zpos), Quaternion.identity, canvas.transform) as GameObject).GetComponent<NoteBehavior>().InitNoteSpeed(speed);
     }
 
     public void IncreaseEnergy(float percentageToAdd)
