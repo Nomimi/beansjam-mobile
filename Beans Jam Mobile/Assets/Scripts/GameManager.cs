@@ -120,8 +120,9 @@ public class GameManager : MonoBehaviour
                     if (x == 0)
                         x = 0.001f;
                     points = 1 / mapNumber(x, 0, tf.sizeDelta.x, 0, 1); //remap distance to 0-1
-                }   
-                _UIController.GetComponent<GameUiScript>().IncreaseBlues(points); //Punkte von 0-1000
+                }
+                float percentage = BluesGoal / 100 * points;
+                _UIController.GetComponent<GameUiScript>().IncreaseBlues(percentage); //Punkte von 0-1000
             }
         }
 
