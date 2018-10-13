@@ -32,6 +32,8 @@ public class GameUiScript : MonoBehaviour
 
     public float noteSpeed = 20;
 
+    public AudioSource songFile;
+
     struct TimeStamp
     {
         public int min;
@@ -128,7 +130,8 @@ public class GameUiScript : MonoBehaviour
             crtTimeStamp.sec = Int32.Parse(splitTime[1]);
             crtTimeStamp.ms = Int32.Parse(splitTime[2]);
             timeStamps.Enqueue(crtTimeStamp);         
-        }        
+        }
+        songFile.Play();
     }   
     public void spawnNote(float speed)
     {
