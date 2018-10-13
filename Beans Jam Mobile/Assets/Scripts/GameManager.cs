@@ -96,8 +96,8 @@ public class GameManager : MonoBehaviour
 			if (touchedObj.CompareTag("Player"))
 			{
 				//Set the head position to the mouse position
-				_dinoHead.transform.position = new Vector3(0.0f, Camera.main.ScreenToWorldPoint(Input.mousePosition).y,
-					Camera.main.ScreenToWorldPoint(Input.mousePosition).z);
+				//_dinoHead.transform.position = new Vector3(Camera.main.ScreenToWorldPoint(Input.mousePosition).y, 0,
+				//	Camera.main.ScreenToWorldPoint(Input.mousePosition).z);
 			}
 
 			//if (touchedObj.CompareTag("Note"))
@@ -138,7 +138,8 @@ public class GameManager : MonoBehaviour
 	{
 		for (float i = 100; i >= 0; i -= Hunger)
 		{
-			i = Saturation -= Hunger;
+			Saturation -= Hunger;
+			i = Saturation;
 			// TODO set UI 
 			// TODO set Dino Model
 			yield return null;
@@ -146,6 +147,7 @@ public class GameManager : MonoBehaviour
 		// i >= 0
 		Running = false;
 		// Load Game-Over Screen
+		StartCoroutine("TransitToGameOver");
 	}
 
 	void OnCollisionEnter(Collider c)
@@ -171,16 +173,6 @@ public class GameManager : MonoBehaviour
 			// Spawn right
 			spawnPoint += _spawnArea.transform.right * SpawnOffset;
 		}
-
-		//if (Random.value < 0.5f)
-		//{
-		//	spawnPoint -= _spawnArea.transform.forward * 0.4f;
-		//}
-		//else
-		//{
-		//	spawnPoint += _spawnArea.transform.forward * 0.4f;
-		//}
-
 		return spawnPoint;
 	}
 
@@ -188,4 +180,17 @@ public class GameManager : MonoBehaviour
 	{
 		_meatBags.Remove(meatBag);
 	}
+
+	//IEnumerator TransitToGameOver()
+	//{
+	//	var gameOverText = GameObject.FindGameObjectWithTag("GameOverPanel");
+	//	for (float i = 100; i >= 0; i -= 0.1f)
+	//	{
+	//		var cam = Camera.main;
+	//		cam.depth = i;
+	//		game
+	//		yield return null;
+	//	}
+		
+	//}
 }
