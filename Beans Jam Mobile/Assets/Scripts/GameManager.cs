@@ -199,16 +199,6 @@ public class GameManager : MonoBehaviour
 		// Load Game-Over Screen
 	}
 
-	void OnCollisionEnter(Collider c)
-	{
-		if (c.CompareTag("MeatBag"))
-		{
-			Saturation += 10;
-			Destroy(c.gameObject);
-
-		}
-	}
-
 	Vector3 GetSpawnPoint()
 	{
 		Vector3 spawnPoint = _spawnArea.transform.position;
