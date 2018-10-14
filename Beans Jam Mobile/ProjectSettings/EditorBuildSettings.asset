@@ -9,6 +9,6 @@ EditorBuildSettings:
     path: Assets/Scenes/DinoAltar.unity
     guid: bbe8783ae21527540b77bddaca5ca6fb
   - enabled: 1
-    path: Assets/Scenes/SimonsScene.unity
-    guid: 09cecce1b45f4be47897f94137cdb4ed
+    path: Assets/Scenes/LESimonScene.unity
+    guid: 8f794619c76bc474d98ba25550efda6d
   m_configObjects: {}
