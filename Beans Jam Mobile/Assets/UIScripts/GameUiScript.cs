@@ -11,8 +11,13 @@ public class GameUiScript : MonoBehaviour
     RectTransform barContainer;
     RectTransform noteAcceptanceArea;
     RectTransform noteBackgroundArea;
-    public GameObject notePrefab;
-    public GameObject noteTrailPrefab;
+    GameObject notePrefab;
+    GameObject notePrefab1;
+    GameObject notePrefab2;
+    GameObject notePrefab3;
+    GameObject notePrefab4;
+    GameObject noteTrailPrefab;
+    public List<GameObject> noteList;
 
     public int SetEnergyBarFillPercentage;
     public int SetBluesBarFillPercentage;
@@ -29,7 +34,7 @@ public class GameUiScript : MonoBehaviour
     private float startTime;
 
     public float noteSpeed = 20;
-    
+
     public bool startPlaying = false;
 
     public struct TimeStamp
@@ -185,7 +190,9 @@ public class GameUiScript : MonoBehaviour
         float ypos = noteBackgroundArea.position.y;
         float zpos = noteBackgroundArea.position.z;
 
-        GameObject thatNote = Instantiate(notePrefab, new Vector3(xpos, ypos, zpos), Quaternion.identity, noteBackgroundArea.transform);
+        int rand = UnityEngine.Random.Range(0, 5);        
+        GameObject tempprefab = noteList[rand];
+        GameObject thatNote = Instantiate(tempprefab, new Vector3(xpos, ypos, zpos), Quaternion.identity, noteBackgroundArea.transform);
         float timeOffset = 1;
         if (timeStamp.hasEnd()) {
             var dist = timeStamp.deltaTime() * (noteSpeed * Time.deltaTime);
