@@ -63,7 +63,7 @@ public class GameManager : MonoBehaviour
 	{
 		// Dino stuff
 		_dino = GameObject.FindGameObjectWithTag("Player");
-		_bloodSpatters = _dino.GetComponents<ParticleSystem>();
+		_bloodSpatters = _dino.GetComponentsInChildren<ParticleSystem>();
 		_anim = _dino.GetComponent<Animator>();
 
 		// other GameObjects
