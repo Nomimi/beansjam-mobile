@@ -14,8 +14,6 @@ public class GameUiScript : MonoBehaviour
     public GameObject notePrefab;
     public GameObject noteTrailPrefab;
 
-    public float speed = 1;
-
     public int SetEnergyBarFillPercentage;
     public int SetBluesBarFillPercentage;
 
@@ -127,7 +125,7 @@ public class GameUiScript : MonoBehaviour
             TimeStamp now = new TimeStamp((Time.time * 1000 + offset) - startTime);
             if (now >= timeStamps.Peek()) {
                 TimeStamp temp = timeStamps.Dequeue();
-                SpawnNote(noteSpeed, temp);
+                SpawnNote(temp);
             }
         }
         else {
@@ -158,11 +156,11 @@ public class GameUiScript : MonoBehaviour
         }
         //songFile.Play();        
     }
-    public void SpawnNote(float speed, TimeStamp timeStamp)
+    public void SpawnNote(TimeStamp timeStamp)
     {
         float xpos = noteBackgroundArea.position.x; //if tweeked check update() for time calculation
         float ypos = noteBackgroundArea.position.y;
-        float zpos = noteBackgroundArea.position.z;
+        float zpos = noteBackgroundArea.position.z;        
 
         GameObject thatNote = Instantiate(notePrefab, new Vector3(xpos, ypos, zpos), Quaternion.identity, noteBackgroundArea.transform);
         float timeOffset = 1;
@@ -170,7 +168,7 @@ public class GameUiScript : MonoBehaviour
             var dist = timeStamp.deltaTime() * (noteSpeed * Time.deltaTime);
             timeOffset = dist / (noteSpeed * Time.deltaTime);
         }
-        thatNote.GetComponent<NoteBehavior>().InitNoteSpeed(speed, timeOffset);
+        thatNote.GetComponent<NoteBehavior>().InitNoteSpeed(noteSpeed, timeOffset);
         if (timeStamp.hasEnd()) {
             GameObject thatNoteTrail = Instantiate(noteTrailPrefab, new Vector3(xpos, ypos, zpos), Quaternion.identity, thatNote.transform);
             //hatNoteTrail.GetComponent<RectTransform>().position = new Vector3(xpos, ypos, zpos);

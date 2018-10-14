@@ -139,6 +139,7 @@ public class GameManager : MonoBehaviour
 
 				if (touchedObj.CompareTag("Note"))
 				{
+                    Debug.Log("note hit!");
 					// check Note position offset from center
 					float points;
 					RectTransform tf = touchedObj.GetComponent<RectTransform>();
