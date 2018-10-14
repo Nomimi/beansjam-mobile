@@ -113,6 +113,8 @@ public class GameUiScript : MonoBehaviour
         float PercentageBarMaxWidth = barContainer.sizeDelta.x;
         onePercentSize = (PercentageBarMaxWidth / 100f);
 
+        setBluesPercentage(10);
+
         spawnRythm(timingsList);
     }
 
@@ -209,6 +211,16 @@ public class GameUiScript : MonoBehaviour
 
         energyBar.sizeDelta = new Vector2(setPercentage * onePercentSize, energyBar.sizeDelta.y);
         EnergyCurrentPerc = setPercentage;
+    }
+    public void setBluesPercentage(float setPercentage)
+    {
+        if (setPercentage > 100f)
+            setPercentage = 100f;
+        else if (setPercentage < 0f)
+            setPercentage = 0f;
+
+        bluesBar.sizeDelta = new Vector2(setPercentage * onePercentSize, bluesBar.sizeDelta.y);
+        BluesCurrentPerc = setPercentage;
     }
 }
 
