@@ -25,9 +25,7 @@ public class NoteBehavior : MonoBehaviour
             if (_despawntimeOffset <= 0.0f) {
                 Destroy(gameObject);
             }
-        }
-        if (registeredForDelete)
-           Debug.Log(gameObject.name + " " + noteSpeed + " " + _despawntimeOffset);
+        }       
     }
 
     public void InitNoteSpeed(float speed, float despawntimeOffset)
@@ -38,8 +36,7 @@ public class NoteBehavior : MonoBehaviour
 
     void OnBecameInvisible()
     {
-        registeredForDelete = true;
-        Debug.Log("registered: " +gameObject.name + " " + noteSpeed + " " + _despawntimeOffset);
+        registeredForDelete = true;        
     }
 
 }
