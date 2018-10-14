@@ -9,18 +9,18 @@ Prefab:
     m_Modifications: []
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 0}
-  m_RootGameObject: {fileID: 1955722220708516}
+  m_RootGameObject: {fileID: 1841470546376378}
   m_IsPrefabAsset: 1
---- !u!1 &1955722220708516
+--- !u!1 &1841470546376378
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 4711934103627602}
-  - component: {fileID: 33876154433283166}
-  - component: {fileID: 23972179167012690}
+  - component: {fileID: 4469009366205398}
+  - component: {fileID: 33533336503447422}
+  - component: {fileID: 23156349577344960}
   m_Layer: 0
   m_Name: Riesenrad
   m_TagString: Untagged
@@ -28,25 +28,25 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &4711934103627602
+--- !u!4 &4469009366205398
 Transform:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1955722220708516}
-  m_LocalRotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071067}
-  m_LocalPosition: {x: 0, y: 0, z: -7.72}
+  m_GameObject: {fileID: 1841470546376378}
+  m_LocalRotation: {x: -0.6603798, y: 0.25278163, z: 0.25278163, w: 0.6603798}
+  m_LocalPosition: {x: 5.81, y: 0, z: 5.37}
   m_LocalScale: {x: 57.669456, y: 86.318, z: 28.834728}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!23 &23972179167012690
+  m_LocalEulerAnglesHint: {x: -90.00001, y: 0, z: 41.892002}
+--- !u!23 &23156349577344960
 MeshRenderer:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1955722220708516}
+  m_GameObject: {fileID: 1841470546376378}
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
@@ -76,10 +76,10 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
---- !u!33 &33876154433283166
+--- !u!33 &33533336503447422
 MeshFilter:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1955722220708516}
+  m_GameObject: {fileID: 1841470546376378}
   m_Mesh: {fileID: 4300000, guid: 09b1a692a9b16c542b9cd67b12255b90, type: 3}
