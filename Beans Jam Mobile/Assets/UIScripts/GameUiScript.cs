@@ -146,7 +146,7 @@ public class GameUiScript : MonoBehaviour
         setBluesPercentage(10);
     }
 
-    void TriggerUiScript(int levelInteger)
+    public void TriggerUiScript(int levelInteger)
     {
         if (levelInteger == 0)
             spawnRythm(timingsList0);
