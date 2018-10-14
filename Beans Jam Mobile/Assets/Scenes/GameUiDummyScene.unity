@@ -562,10 +562,8 @@ MonoBehaviour:
   notePrefab: {fileID: 1135741904768204, guid: 5c12dfff0d69afb41bf82424c7e6b380, type: 2}
   noteTrailPrefab: {fileID: 1519230156027322, guid: babd432d5ff2abc46a7737c682a972c7,
     type: 2}
-  speed: 1
   SetEnergyBarFillPercentage: 100
   SetBluesBarFillPercentage: 10
-  noteSpeed: 20
   songFile: {fileID: 0}
 --- !u!1 &1522680391
 GameObject:
