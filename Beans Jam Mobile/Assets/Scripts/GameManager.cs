@@ -143,7 +143,7 @@ public class GameManager : MonoBehaviour
 					float points;
 					RectTransform tf = touchedObj.GetComponent<RectTransform>();
 					float x = System.Math.Abs(tf.sizeDelta.x);
-					if (tf.sizeDelta.x / 2 < x)
+					if (_noteHitArea.GetComponent<RectTransform>().sizeDelta.x / 2 < x)
 						points = -missedNotePenalty;
 					else
 					{
