@@ -113,7 +113,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e46255c4099cda54b8b9bac219816bf2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CenterPoint: {fileID: 0}
 --- !u!136 &136569406937513592
 CapsuleCollider:
   m_ObjectHideFlags: 1
@@ -135,7 +134,7 @@ NavMeshAgent:
   m_GameObject: {fileID: 1961015615366542}
   m_Enabled: 1
   m_AgentTypeID: 0
-  m_Radius: 0.2
+  m_Radius: 0.5
   m_Speed: 0.5
   m_Acceleration: 8
   avoidancePriority: 50

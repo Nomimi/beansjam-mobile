@@ -72,7 +72,7 @@ public class MeatbahBehavior : MonoBehaviour
 			GameObject.FindGameObjectWithTag("GameController").GetComponent<GameManager>().RemoveMeatbag(gameObject);
 			Destroy(gameObject);
 		}
-		else if (other.CompareTag("Player"))
+		else if (other.CompareTag("Head"))
 		{
 			GameObject.FindGameObjectWithTag("GameController").GetComponent<GameManager>().Eat(gameObject);
 			Destroy(gameObject);

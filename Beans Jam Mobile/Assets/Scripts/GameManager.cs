@@ -63,8 +63,8 @@ public class GameManager : MonoBehaviour
 	{
 		// Dino stuff
 		_dino = GameObject.FindGameObjectWithTag("Player");
-        _bloodSpatters = _dino.GetComponentsInChildren<ParticleSystem>();
-        _anim = _dino.GetComponent<Animator>();
+		_bloodSpatters = _dino.GetComponentsInChildren<ParticleSystem>();
+		_anim = _dino.GetComponent<Animator>();
 
 		// other GameObjects
 		_meatBags = new List<GameObject>();
@@ -120,26 +120,20 @@ public class GameManager : MonoBehaviour
 
 		if (Input.GetMouseButtonDown(0))
 		{
-			foreach (var particleSystem in _bloodSpatters)
-			{
-				particleSystem.Play();
-			}
 			_anim.Play(_eatAnimHash);
+
 			RaycastHit hit;
 			var touchedObj = ReturnClickedObject(out hit);
 			if (touchedObj != null)
 			{
-
 				if (touchedObj.CompareTag("Player"))
 				{
 					_anim.Play(_eatAnimHash);
 				}
 
-
-
 				if (touchedObj.CompareTag("Note"))
 				{
-                    Debug.Log("note hit!");
+					Debug.Log("note hit!");
 					// check Note position offset from center
 					float points;
 					RectTransform tf = touchedObj.GetComponent<RectTransform>();
