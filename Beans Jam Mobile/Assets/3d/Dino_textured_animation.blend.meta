@@ -47,6 +47,7 @@ ModelImporter:
     100082: //RootNode
     100084: Gitarre
     100086: Root
+    100088: guitar
     400000: CTR_hand_L
     400002: DEF_beard1_L
     400004: DEF_beard1_R
@@ -91,11 +92,14 @@ ModelImporter:
     400082: //RootNode
     400084: Gitarre
     400086: Root
+    400088: guitar
     2100000: Dino_Material__Dino_png
     2100002: Dino_Material
     2100004: Gitarren_Material
+    2100006: unnamed
     4300000: Dino
     4300002: Gitarre
+    4300004: guitar
     7400000: Default Take
     7400002: Dino_ArmatureAction
     7400004: Dino_Eat
@@ -105,6 +109,7 @@ ModelImporter:
     9500000: //RootNode
     13700000: Dino
     13700002: Gitarre
+    13700004: guitar
     2186277476908879412: ImportLogs
   externalObjects: {}
   materials:

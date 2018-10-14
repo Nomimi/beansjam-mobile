@@ -178,8 +178,10 @@ public class GameManager : MonoBehaviour
 						points = -missedNotePenalty;
 					else
 					{
-						if (x == 0)
+						if (x.Equals(0))
+						{
 							x = 0.001f;
+						}
 						points = 1 / mapNumber(x, 0, tf.sizeDelta.x, 0, 1) * _meatBags.Count; //remap distance to 0-1
 					}
 
