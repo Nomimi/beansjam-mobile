@@ -303,7 +303,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 440939028}
-  m_RootOrder: 1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!82 &220098504
 AudioSource:
@@ -1877,7 +1877,7 @@ Transform:
   m_LocalScale: {x: 1.9131358, y: 1.9131358, z: 1.9131358}
   m_Children: []
   m_Father: {fileID: 440939028}
-  m_RootOrder: 4
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!82 &334565269
 AudioSource:
@@ -2209,7 +2209,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 440939028}
-  m_RootOrder: 2
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!82 &415067525
 AudioSource:
@@ -2544,7 +2544,6 @@ Transform:
   m_LocalPosition: {x: 46.631805, y: 3.3162346, z: -4.2661076}
   m_LocalScale: {x: 0.52270204, y: 0.52270204, z: 0.52270204}
   m_Children:
-  - {fileID: 1453130966}
   - {fileID: 220098503}
   - {fileID: 415067524}
   - {fileID: 1566195239}
@@ -4413,7 +4412,7 @@ GameObject:
   - component: {fileID: 1148281794}
   m_Layer: 0
   m_Name: NavSpawnArea
-  m_TagString: Spawn
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -4799,7 +4798,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 400082, guid: bd3a34d68cb80a747bdf0d2e755b6138, type: 3}
       propertyPath: m_RootOrder
-      value: 5
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 400082, guid: bd3a34d68cb80a747bdf0d2e755b6138, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
@@ -5024,12 +5023,12 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1453130965}
-  m_LocalRotation: {x: -0, y: -1, z: -0.000000059604645, w: 0}
-  m_LocalPosition: {x: 8.289574, y: -1.0308924, z: -7.2724867}
-  m_LocalScale: {x: 1.9131358, y: 1.9131358, z: 1.9131358}
+  m_LocalRotation: {x: -0, y: -1, z: -0, w: 0}
+  m_LocalPosition: {x: -42.318184, y: 2.7773848, z: 2.9147637}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 440939028}
-  m_RootOrder: 0
+  m_Father: {fileID: 1333316490}
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1453130967
 MonoBehaviour:
@@ -5212,7 +5211,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 440939028}
-  m_RootOrder: 3
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!82 &1566195240
 AudioSource:

@@ -2363,7 +2363,7 @@ Prefab:
     - target: {fileID: 9500000, guid: bd3a34d68cb80a747bdf0d2e755b6138, type: 3}
       propertyPath: m_Controller
       value: 
-      objectReference: {fileID: 9100000, guid: 35a96d86f6f54b346a5586520b44c3a4, type: 2}
+      objectReference: {fileID: 9100000, guid: e2eca07f5a1707a4a8d8d34c86888fbc, type: 2}
     - target: {fileID: 9500000, guid: bd3a34d68cb80a747bdf0d2e755b6138, type: 3}
       propertyPath: m_ApplyRootMotion
       value: 1
