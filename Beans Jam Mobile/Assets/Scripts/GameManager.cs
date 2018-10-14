@@ -9,7 +9,7 @@ public class GameManager : MonoBehaviour
 {
 	#region Const
 
-	private const float SpawnOffset = 4f;
+	private const float SpawnOffset = 8f;
 
 	#endregion
 	#region Members
