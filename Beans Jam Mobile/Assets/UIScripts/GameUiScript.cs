@@ -6,11 +6,11 @@ using UnityEngine;
 public class GameUiScript : MonoBehaviour
 {
 
-    public RectTransform energyBar;
-    public RectTransform bluesBar;
-    public RectTransform barContainer;
-    public RectTransform noteAcceptanceArea;
-    public RectTransform noteBackgroundArea;
+    RectTransform energyBar;
+    RectTransform bluesBar;
+    RectTransform barContainer;
+    RectTransform noteAcceptanceArea;
+    RectTransform noteBackgroundArea;
     public GameObject notePrefab;
     public GameObject noteTrailPrefab;
 
@@ -21,15 +21,16 @@ public class GameUiScript : MonoBehaviour
     private float EnergyCurrentPerc = 100f;
     private float BluesCurrentPerc = 10f;
 
-    private Queue<string> timingsList;
+    private Queue<string> timingsList0;
+    private Queue<string> timingsList1;
+    private Queue<string> timingsList2;
+
     private Queue<TimeStamp> timeStamps;
     private float startTime;
 
     public float noteSpeed = 20;
-
-    public AudioSource songFileNurInst;
-    public AudioSource songFileOhneInst;
-    public AudioSource songFileFull;
+    
+    public bool startPlaying = false;
 
     public struct TimeStamp
     {
@@ -62,7 +63,7 @@ public class GameUiScript : MonoBehaviour
             float res = 0;
             res += min * 60000;
             res += sec * 1000;
-            res += ms*10;
+            res += ms * 10;
             return res;
         }
         public float getMillisecondsEnd()
@@ -79,7 +80,7 @@ public class GameUiScript : MonoBehaviour
             res += minEnd * 60000;
             res += secEnd * 1000;
             res += msEnd * 10;
-            return res-getMilliseconds();
+            return res - getMilliseconds();
         }
         public static bool operator >=(TimeStamp t1, TimeStamp t2)
         {
@@ -105,17 +106,40 @@ public class GameUiScript : MonoBehaviour
 
     // Use this for initialization
     void Start()
-    {        
-        timingsList = new Queue<string>(new[] { "0:02:87-0:05:04", "0:06:66", "0:06:83", "0:06:99", "0:07:15-0:08:94", "0:09:46-0:10:39", "0:10:42-0:12:42", "0:13:61", "0:13:82", "0:13:94", "0:14:23 - 0:16:27", "0:17:08", "0:17:42", "0:17:71", "0:18:04" });        
+    {
+        //DinoBlues Level 1
+        timingsList0 = new Queue<string>(new[] { "0:02:85","0:04:45","0:04:78","0:06:35","0:06:69","0:08:24","0:08:59","0:10:45","0:12:03",
+            "0:12:36","0:13:92","0:14:27","0:15:82","0:16:17","0:18:04","0:18:98","0:19:91","0:20:88","0:21:82","0:22:76","0:23:72","0:24:07",
+            "0:24:67","0:25:61","0:26:51","0:27:52","0:28:45","0:29:12","0:29:41","0:30:35","0:31:29","0:32:25","0:33:18-0:35:43","0:35:74",
+            "0:36:06","0:36:39","0:36:69","0:37:02","0:39:83","0:40:16","0:40:48","0:40:81","0:43:32","0:43:62","0:44:23","0:44:58","0:47:39",
+            "0:48:04","0:48:37","0:49:90","0:50:27","0:51:20","0:52:12","0:53:70","0:54:07","0:54:96","0:55:91-0:58:09" });
+
+        timingsList1 = new Queue<string>(new[] { "0:02:87-0:05:04", "0:06:66", "0:06:83", "0:06:99", "0:07:15-0:08:94", "0:09:46-0:10:39", "0:10:42-0:12:42", "0:13:61", "0:13:82", "0:13:94", "0:14:23 - 0:16:27", "0:17:08", "0:17:42", "0:17:71", "0:18:04" });
+
+        timingsList2 = new Queue<string>(new[] { "" });
 
         timeStamps = new Queue<TimeStamp>();
+
+        energyBar = GameObject.FindGameObjectWithTag("EnergyBar").GetComponent<RectTransform>();
+        bluesBar = GameObject.FindGameObjectWithTag("BluesBar").GetComponent<RectTransform>();
+        barContainer = GameObject.FindGameObjectWithTag("BarContainer").GetComponent<RectTransform>();
+        noteAcceptanceArea = GameObject.FindGameObjectWithTag("NoteAcceptanceArea").GetComponent<RectTransform>();
+        noteBackgroundArea = GameObject.FindGameObjectWithTag("NoteBackground").GetComponent<RectTransform>();
 
         float PercentageBarMaxWidth = barContainer.sizeDelta.x;
         onePercentSize = (PercentageBarMaxWidth / 100f);
 
         setBluesPercentage(10);
+    }
 
-        spawnRythm(timingsList);
+    void TriggerUiScript(int levelInteger)
+    {
+        if (levelInteger == 0)
+            spawnRythm(timingsList0);
+        if (levelInteger == 1)
+            spawnRythm(timingsList1);
+        if (levelInteger == 2)
+            spawnRythm(timingsList2);
     }
 
     // Update is called once per frame
@@ -130,14 +154,11 @@ public class GameUiScript : MonoBehaviour
                 SpawnNote(temp);
             }
         }
-        else {
-            spawnRythm(timingsList); // loops NoteSpawn
-        }
     }
     public void spawnRythm(Queue<string> rythmQueue)
     {
         startTime = Time.time * 1000;
-        Queue<string> timingsListtemp = new Queue<string>(timingsList);
+        Queue<string> timingsListtemp = new Queue<string>(rythmQueue);
         while (timingsListtemp.Count > 0) {
             TimeStamp crtTimeStamp = new TimeStamp();
             string timingString = timingsListtemp.Dequeue();
@@ -156,13 +177,13 @@ public class GameUiScript : MonoBehaviour
             crtTimeStamp.ms = Int32.Parse(splitTime[2]);
             timeStamps.Enqueue(crtTimeStamp);
         }
-        songFileOhneInst.Play();        
+        startPlaying = true;
     }
     public void SpawnNote(TimeStamp timeStamp)
     {
         float xpos = noteBackgroundArea.position.x; //if tweeked check update() for time calculation
         float ypos = noteBackgroundArea.position.y;
-        float zpos = noteBackgroundArea.position.z;        
+        float zpos = noteBackgroundArea.position.z;
 
         GameObject thatNote = Instantiate(notePrefab, new Vector3(xpos, ypos, zpos), Quaternion.identity, noteBackgroundArea.transform);
         float timeOffset = 1;
