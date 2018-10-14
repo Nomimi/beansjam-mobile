@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Security.Policy;
 using UnityEngine;
 using UnityEngine.UI;
@@ -17,9 +18,9 @@ public class GameManager : MonoBehaviour
 
 	private List<GameObject> _meatBags;
 
-    private GameObject[] _notes;
+	private GameObject[] _notes;
 
-    private GameObject _spawnArea;
+	private GameObject _spawnArea;
 
 	private GameObject _UIController;
 
@@ -33,7 +34,13 @@ public class GameManager : MonoBehaviour
 
 	private Text _gameOverText;
 
-	private Animator _anim;    
+	private Animator _anim;
+
+	private AudioSource[] _sounds;
+
+	private List<AudioSource> _eatingSounds;
+
+
 
 	#endregion Members
 
@@ -65,8 +72,8 @@ public class GameManager : MonoBehaviour
 	{
 		// Dino stuff
 		_dino = GameObject.FindGameObjectWithTag("Player");
-        _bloodSpatters = _dino.GetComponentsInChildren<ParticleSystem>();
-        _anim = _dino.GetComponent<Animator>();
+		_bloodSpatters = _dino.GetComponentsInChildren<ParticleSystem>();
+		_anim = _dino.GetComponent<Animator>();
 
 		// other GameObjects
 		_meatBags = new List<GameObject>();
@@ -82,6 +89,10 @@ public class GameManager : MonoBehaviour
 		_UIController = GameObject.FindGameObjectWithTag("UIController");
 
 		_noteHitArea = GameObject.FindGameObjectWithTag("NoteHitArea");
+
+		_sounds = gameObject.GetComponentsInChildren<AudioSource>();
+
+		_eatingSounds = _sounds.Where(x => x.clip.name.Contains("fressen")).ToList();
 
 		StartCoroutine("ApplyHunger");
 	}
@@ -121,10 +132,6 @@ public class GameManager : MonoBehaviour
 
 		if (Input.GetMouseButtonDown(0))
 		{
-			foreach (var particleSystem in _bloodSpatters)
-			{
-				particleSystem.Play();
-			}
 			_anim.Play(_eatAnimHash);
 			RaycastHit hit;
 			var touchedObj = ReturnClickedObject(out hit);
@@ -133,28 +140,31 @@ public class GameManager : MonoBehaviour
 				if (touchedObj.CompareTag("Player"))
 				{
 					_anim.Play(_eatAnimHash);
-				}				
+				}
 			}
-            _notes = GameObject.FindGameObjectsWithTag("Note");
-            foreach( GameObject note in _notes) {
-                if (ReturnClickedUiObject(note.GetComponent<Image>())) {
-                    Debug.Log("note hit!");
-                    // check Note position offset from center
-                    float points;
-                    RectTransform tf = touchedObj.GetComponent<RectTransform>();
-                    float x = System.Math.Abs(tf.sizeDelta.x);
-                    if (_noteHitArea.GetComponent<RectTransform>().sizeDelta.x / 2 < x)
-                        points = -missedNotePenalty;
-                    else {
-                        if (x == 0)
-                            x = 0.001f;
-                        points = 1 / mapNumber(x, 0, tf.sizeDelta.x, 0, 1); //remap distance to 0-1
-                    }
+			_notes = GameObject.FindGameObjectsWithTag("Note");
+			foreach (GameObject note in _notes)
+			{
+				if (ReturnClickedUiObject(note.GetComponent<Image>()))
+				{
+					Debug.Log("note hit!");
+					// check Note position offset from center
+					float points;
+					RectTransform tf = touchedObj.GetComponent<RectTransform>();
+					float x = System.Math.Abs(tf.sizeDelta.x);
+					if (_noteHitArea.GetComponent<RectTransform>().sizeDelta.x / 2 < x)
+						points = -missedNotePenalty;
+					else
+					{
+						if (x == 0)
+							x = 0.001f;
+						points = 1 / mapNumber(x, 0, tf.sizeDelta.x, 0, 1); //remap distance to 0-1
+					}
 
-                    float percentage = BluesGoal / 100 * points;
-                    _UIController.GetComponent<GameUiScript>().IncreaseBlues(percentage); //Punkte von 0-1000
-                }
-            }
+					float percentage = BluesGoal / 100 * points;
+					_UIController.GetComponent<GameUiScript>().IncreaseBlues(percentage); //Punkte von 0-1000
+				}
+			}
 		}
 
 		#endregion InputHandling
@@ -184,15 +194,15 @@ public class GameManager : MonoBehaviour
 		return target;
 	}
 
-    //Method to Return Clicked Ui Object
-    bool ReturnClickedUiObject(Image imgIn)
-    {
-        if (imgIn.Raycast(new Vector2(20, 20), Camera.main))
-            return true;
-        return false;
-    }
+	//Method to Return Clicked Ui Object
+	bool ReturnClickedUiObject(Image imgIn)
+	{
+		if (imgIn.Raycast(new Vector2(20, 20), Camera.main))
+			return true;
+		return false;
+	}
 
-    IEnumerator ApplyHunger()
+	IEnumerator ApplyHunger()
 	{
 		for (float i = 100; i >= 0; i -= Hunger)
 		{
@@ -253,6 +263,9 @@ public class GameManager : MonoBehaviour
 		{
 			splat.Play();
 		}
+
+		int rand = Random.Range(0, _eatingSounds.Count());
+		_eatingSounds[rand].Play();
 
 		// TODO sound
 	}
