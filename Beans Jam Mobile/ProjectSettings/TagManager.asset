@@ -12,6 +12,11 @@ TagManager:
   - GameOverText
   - NoteHitArea
   - UIController
+  - Head
+  - EnergyBar
+  - BluesBar
+  - BarContainer
+  - NoteBackground
   layers:
   - Default
   - TransparentFX

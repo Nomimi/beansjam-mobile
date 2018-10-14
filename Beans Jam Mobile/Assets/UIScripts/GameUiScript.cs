@@ -137,7 +137,7 @@ public class GameUiScript : MonoBehaviour
         energyBar = GameObject.FindGameObjectWithTag("EnergyBar").GetComponent<RectTransform>();
         bluesBar = GameObject.FindGameObjectWithTag("BluesBar").GetComponent<RectTransform>();
         barContainer = GameObject.FindGameObjectWithTag("BarContainer").GetComponent<RectTransform>();
-        noteAcceptanceArea = GameObject.FindGameObjectWithTag("NoteAcceptanceArea").GetComponent<RectTransform>();
+        noteAcceptanceArea = GameObject.FindGameObjectWithTag("NoteHitArea").GetComponent<RectTransform>();
         noteBackgroundArea = GameObject.FindGameObjectWithTag("NoteBackground").GetComponent<RectTransform>();
 
         float PercentageBarMaxWidth = barContainer.sizeDelta.x;
