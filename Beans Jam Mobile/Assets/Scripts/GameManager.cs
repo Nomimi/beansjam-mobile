@@ -13,7 +13,7 @@ public class GameManager : MonoBehaviour
 	#endregion
 	#region Members
 
-	private GameObject _dinoHead;
+	private GameObject _dino;
 
 	private List<GameObject> _meatBags;
 
@@ -61,20 +61,26 @@ public class GameManager : MonoBehaviour
 	// Use this for initialization
 	void Start()
 	{
-		_dinoHead = GameObject.FindGameObjectWithTag("Player");
+		// Dino stuff
+		_dino = GameObject.FindGameObjectWithTag("Player");
+		_bloodSpatters = _dino.GetComponents<ParticleSystem>();
+		_anim = _dino.GetComponent<Animator>();
+
+		// other GameObjects
 		_meatBags = new List<GameObject>();
 		_spawnArea = GameObject.FindGameObjectWithTag("Spawn");
-		_bloodSpatters = GetComponentsInChildren<ParticleSystem>();
+
+		// UI stuff
 		_gameOverText = GameObject.FindGameObjectWithTag("GameOverText").GetComponent<Text>();
 		_gameOverText.CrossFadeAlpha(0f, 0f, true);
 		_gameOverPanel = GameObject.FindGameObjectWithTag("GameOverPanel").GetComponent<Image>();
 		Color c = _gameOverPanel.color;
 		c.a = 0;
 		_gameOverPanel.color = c;
-		_noteHitArea = GameObject.FindGameObjectWithTag("NoteHitArea");
 		_UIController = GameObject.FindGameObjectWithTag("UIController");
-		_anim = GetComponent<Animator>();
 
+
+		_noteHitArea = GameObject.FindGameObjectWithTag("NoteHitArea");
 
 		StartCoroutine("ApplyHunger");
 	}
@@ -108,15 +114,17 @@ public class GameManager : MonoBehaviour
 
 				if (touchedObj.CompareTag("Player"))
 				{
-					//Set the position to the mouse position
-					_dinoHead.transform.position = new Vector3(Camera.main.ScreenToWorldPoint(Input.mousePosition).x, Camera.main.ScreenToWorldPoint(Input.mousePosition).y,
-						0.0f);
 				}
 			}
 		}
 
 		if (Input.GetMouseButtonDown(0))
 		{
+			foreach (var particleSystem in _bloodSpatters)
+			{
+				particleSystem.Play();
+			}
+			_anim.Play(_eatAnimHash);
 			RaycastHit hit;
 			var touchedObj = ReturnClickedObject(out hit);
 			if (touchedObj != null)
@@ -127,10 +135,7 @@ public class GameManager : MonoBehaviour
 					_anim.Play(_eatAnimHash);
 				}
 
-				foreach (var particleSystem in _bloodSpatters)
-				{
-					particleSystem.Play();
-				}
+
 
 				if (touchedObj.CompareTag("Note"))
 				{
