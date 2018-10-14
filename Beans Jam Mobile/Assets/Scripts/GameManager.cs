@@ -269,4 +269,15 @@ public class GameManager : MonoBehaviour
 
 		// TODO sound
 	}
+
+
+	IEnumerator PlayRandomFart()
+	{
+		for (int i = 0; i < 2; i++)
+		{
+			c.a = i;
+			_gameOverPanel.color = c;
+			yield return new WaitForSeconds(.1f);
+		}
+	}
 }
