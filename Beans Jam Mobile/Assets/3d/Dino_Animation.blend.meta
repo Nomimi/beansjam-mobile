@@ -1,0 +1,191 @@
+fileFormatVersion: 2
+guid: 1d6d01b6ee25e244a9110f040af15903
+ModelImporter:
+  serializedVersion: 23
+  fileIDToRecycleName:
+    100000: CTR_hand_L
+    100002: DEF_beard1_L
+    100004: DEF_beard1_R
+    100006: DEF_beard2_L
+    100008: DEF_beard2_R
+    100010: DEF_eye_L
+    100012: DEF_eye_R
+    100014: DEF_feet_L
+    100016: DEF_feet_R
+    100018: DEF_foot_L
+    100020: DEF_foot_R
+    100022: DEF_guitar
+    100024: DEF_hand_L
+    100026: DEF_hand_R
+    100028: DEF_hat
+    100030: DEF_head
+    100032: DEF_lowerArm_L
+    100034: DEF_lowerArm_R
+    100036: DEF_lowerBody
+    100038: DEF_lowerLeg_L
+    100040: DEF_lowerLeg_R
+    100042: DEF_lowerMouth
+    100044: DEF_shoulder_L
+    100046: DEF_shoulder_R
+    100048: DEF_tail1
+    100050: DEF_tail2
+    100052: DEF_tail3
+    100054: DEF_tongu
+    100056: DEF_tongu_001
+    100058: DEF_tongu_002
+    100060: DEF_tongu_003
+    100062: DEF_upperArm_L
+    100064: DEF_upperArm_R
+    100066: DEF_upperBody
+    100068: DEF_upperLeg_L
+    100070: DEF_upperLeg_R
+    100072: DEF_upperMouth
+    100074: //RootNode
+    100076: Dino_Armature
+    100078: dino_v12_group
+    100080: eyes
+    100082: eyes_001
+    100084: eyes_002
+    100086: Root
+    400000: CTR_hand_L
+    400002: DEF_beard1_L
+    400004: DEF_beard1_R
+    400006: DEF_beard2_L
+    400008: DEF_beard2_R
+    400010: DEF_eye_L
+    400012: DEF_eye_R
+    400014: DEF_feet_L
+    400016: DEF_feet_R
+    400018: DEF_foot_L
+    400020: DEF_foot_R
+    400022: DEF_guitar
+    400024: DEF_hand_L
+    400026: DEF_hand_R
+    400028: DEF_hat
+    400030: DEF_head
+    400032: DEF_lowerArm_L
+    400034: DEF_lowerArm_R
+    400036: DEF_lowerBody
+    400038: DEF_lowerLeg_L
+    400040: DEF_lowerLeg_R
+    400042: DEF_lowerMouth
+    400044: DEF_shoulder_L
+    400046: DEF_shoulder_R
+    400048: DEF_tail1
+    400050: DEF_tail2
+    400052: DEF_tail3
+    400054: DEF_tongu
+    400056: DEF_tongu_001
+    400058: DEF_tongu_002
+    400060: DEF_tongu_003
+    400062: DEF_upperArm_L
+    400064: DEF_upperArm_R
+    400066: DEF_upperBody
+    400068: DEF_upperLeg_L
+    400070: DEF_upperLeg_R
+    400072: DEF_upperMouth
+    400074: //RootNode
+    400076: Dino_Armature
+    400078: dino_v12_group
+    400080: eyes
+    400082: eyes_001
+    400084: eyes_002
+    400086: Root
+    2100000: lambert1
+    2100002: lambert1_002
+    4300000: eyes_002
+    4300002: eyes_001
+    4300004: eyes
+    7400000: Default Take
+    7400002: Dino_ArmatureAction
+    7400004: Dino_Eat
+    7400006: Dino_Eat_Loop
+    7400008: Dino_Idle
+    7400010: Dino_Play
+    9500000: //RootNode
+    13700000: eyes
+    13700002: eyes_001
+    13700004: eyes_002
+  externalObjects: {}
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+    materialLocation: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    rigImportErrors: 
+    rigImportWarnings: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    importAnimatedCustomProperties: 0
+    importConstraints: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    extraUserProperties: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    importVisibility: 1
+    importBlendShapes: 1
+    importCameras: 1
+    importLights: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    preserveHierarchy: 0
+    indexFormat: 0
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+    previousCalculatedGlobalScale: 1
+    hasPreviousCalculatedGlobalScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+    normalCalculationMode: 4
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    serializedVersion: 2
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    rootMotionBoneRotation: {x: 0, y: 0, z: 0, w: 1}
+    hasTranslationDoF: 0
+    hasExtraRoot: 0
+    skeletonHasParents: 1
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 2
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

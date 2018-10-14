@@ -47,5 +47,4 @@ Thumbs.db
 # Ignore Rider
 Assets/Plugins/Editor/JetBrains*
 Assets/Plugins/GitHub*
-*.meta
 *.apk
