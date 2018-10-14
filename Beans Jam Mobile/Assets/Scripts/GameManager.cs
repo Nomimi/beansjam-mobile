@@ -64,7 +64,6 @@ public class GameManager : MonoBehaviour
 
 	int _eatAnimHash = Animator.StringToHash("Dino_Eat");
 
-	public int Level;
 	#endregion Properties
 
 	// Use this for initialization
@@ -233,7 +232,6 @@ public class GameManager : MonoBehaviour
 			Saturation -= Hunger;
 			i = Saturation;
 			_UIController.GetComponent<GameUiScript>().setEnergyPercentage(Saturation);
-			// TODO set Dino Model
 			yield return null;
 		}
 		// i >= 0
