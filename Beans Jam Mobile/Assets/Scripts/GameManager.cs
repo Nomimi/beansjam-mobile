@@ -39,6 +39,7 @@ public class GameManager : MonoBehaviour
 	private AudioSource[] _sounds;
 
 	private List<AudioSource> _eatingSounds;
+	private List<AudioSource> _schnappSounds;
 
 
 
@@ -93,6 +94,7 @@ public class GameManager : MonoBehaviour
 		_sounds = gameObject.GetComponentsInChildren<AudioSource>();
 
 		_eatingSounds = _sounds.Where(x => x.clip.name.Contains("fressen")).ToList();
+		_schnappSounds = _sounds.Where(x => x.clip.name.Contains("schnapp")).ToList();
 
 		StartCoroutine("ApplyHunger");
 	}
@@ -140,6 +142,8 @@ public class GameManager : MonoBehaviour
 				if (touchedObj.CompareTag("Player"))
 				{
 					_anim.Play(_eatAnimHash);
+					int rand = Random.Range(0, _schnappSounds.Count());
+					_schnappSounds[rand].Play();
 				}
 			}
 			_notes = GameObject.FindGameObjectsWithTag("Note");
@@ -268,16 +272,5 @@ public class GameManager : MonoBehaviour
 		_eatingSounds[rand].Play();
 
 		// TODO sound
-	}
-
-
-	IEnumerator PlayRandomFart()
-	{
-		for (int i = 0; i < 2; i++)
-		{
-			c.a = i;
-			_gameOverPanel.color = c;
-			yield return new WaitForSeconds(.1f);
-		}
 	}
 }
