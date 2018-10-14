@@ -189,8 +189,9 @@ public class GameManager : MonoBehaviour
 	{
 		for (float i = 100; i >= 0; i -= Hunger)
 		{
-			i = Saturation -= Hunger;
-			_UIController.GetComponent<GameUiScript>().setEnergyPercentage(i);
+			Saturation -= Hunger;
+			i = Saturation;
+			_UIController.GetComponent<GameUiScript>().setEnergyPercentage(Saturation);
 			// TODO set Dino Model
 			yield return null;
 		}
@@ -212,16 +213,6 @@ public class GameManager : MonoBehaviour
 			// Spawn right
 			spawnPoint += _spawnArea.transform.right * SpawnOffset;
 		}
-
-		//if (Random.value < 0.5f)
-		//{
-		//	spawnPoint -= _spawnArea.transform.forward * 0.4f;
-		//}
-		//else
-		//{
-		//	spawnPoint += _spawnArea.transform.forward * 0.4f;
-		//}
-
 		return spawnPoint;
 	}
 
@@ -245,5 +236,17 @@ public class GameManager : MonoBehaviour
 	float mapNumber(float s, float a1, float a2, float b1, float b2) //maps value s from one range to the other
 	{
 		return b1 + (s - a1) * (b2 - b1) / (a2 - a1);
+	}
+
+	public void Eat(GameObject meatbag)
+	{
+		Saturation += 10;
+		_meatBags.Remove(meatbag);
+		foreach (var splat in _bloodSpatters)
+		{
+			splat.Play();
+		}
+
+		// TODO sound
 	}
 }
