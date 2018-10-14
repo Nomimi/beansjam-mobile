@@ -41,14 +41,9 @@ public class GameManager : MonoBehaviour
 	private List<AudioSource> _eatingSounds;
 	private List<AudioSource> _schnappSounds;
 
-	private AudioSource _dinoBlues;
 	private AudioSource _dinoBluesNoInst;
-	private AudioSource _dinoFair;
 	private AudioSource _dinoFairNoInst;
-	private AudioSource _fressAtacke;
 	private AudioSource _fressAtackeNoInst;
-
-
 	#endregion Members
 
 	#region Properties
@@ -72,6 +67,8 @@ public class GameManager : MonoBehaviour
 	public float MinSpawnTime;
 
 	int _eatAnimHash = Animator.StringToHash("Dino_Eat");
+
+	public int Level;
 	#endregion Properties
 
 	// Use this for initialization
@@ -109,12 +106,26 @@ public class GameManager : MonoBehaviour
 		_eatingSounds = _sounds.Where(x => x.clip.name.Contains("fressen")).ToList();
 		_schnappSounds = _sounds.Where(x => x.clip.name.Contains("schnapp")).ToList();
 
-		_dinoBlues = _sounds.Single(x => x.clip.name.Contains("DinoBlues_nur"));
 		_dinoBluesNoInst = _sounds.Single(x => x.clip.name.Contains("DinoBlues_ohne"));
-		_dinoFair = _sounds.Single(x => x.clip.name.Contains("Dinofair_nur"));
 		_dinoFairNoInst = _sounds.Single(x => x.clip.name.Contains("Dinofair_ohne"));
-		_fressAtacke = _sounds.Single(x => x.clip.name.Contains("Fressattacke_nur"));
 		_fressAtackeNoInst = _sounds.Single(x => x.clip.name.Contains("Fressattacke_ohne"));
+
+		var script = GetComponentInChildren<GameUiScript>();
+		switch (levelvarscripot.LEVEL)
+		{
+			case 0:
+				script.TriggerUiScript(levelvarscripot.LEVEL);
+				_dinoBluesNoInst.Play();
+				break;
+			case 1:
+				script.TriggerUiScript(levelvarscripot.LEVEL);
+				_dinoFairNoInst.Play();
+				break;
+			default:
+				script.TriggerUiScript(2);
+				_fressAtackeNoInst.Play();
+				break;
+		}
 	}
 
 	// Update is called once per frame

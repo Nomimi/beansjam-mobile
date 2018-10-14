@@ -29,7 +29,8 @@ public class MainMenuButtonScript : MonoBehaviour
 
     public void PlayLevel(int scene)
     {
-        SceneManager.LoadScene(scene);
+	    levelvarscripot.LEVEL = scene;
+        SceneManager.LoadScene(2);
     }
 
     public void TriggerMenuBack()

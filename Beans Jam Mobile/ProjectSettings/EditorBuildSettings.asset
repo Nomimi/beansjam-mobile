@@ -5,19 +5,10 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 0
-    path: 
-    guid: 00000000000000000000000000000000
-  - enabled: 0
-    path: Assets/Scenes/SampleScene.unity
-    guid: 99c9720ab356a0642a771bea13969a05
-  - enabled: 0
-    path: 
-    guid: 00000000000000000000000000000000
-  - enabled: 0
-    path: Assets/Scenes/GameUiDummyScene.unity
-    guid: f4eaf36973bd4654e9c3f8e65bffd25c
   - enabled: 1
-    path: Assets/Scenes/LeandersTestScene/LeandersTestScene.unity
-    guid: 90a5392b76d0b2a4c9591cc47d056c6c
+    path: Assets/Scenes/DinoAltar.unity
+    guid: bbe8783ae21527540b77bddaca5ca6fb
+  - enabled: 1
+    path: Assets/Scenes/SimonsScene.unity
+    guid: 09cecce1b45f4be47897f94137cdb4ed
   m_configObjects: {}
