@@ -31,6 +31,8 @@ public class GameManager : MonoBehaviour
 
 	private Text _gameOverText;
 
+	private Animator _anim;
+
 	#endregion Members
 
 	#region Properties
@@ -53,6 +55,7 @@ public class GameManager : MonoBehaviour
 
 	public float MinSpawnTime;
 
+	int _eatAnimHash = Animator.StringToHash("Dino_Eat");
 	#endregion Properties
 
 	// Use this for initialization
@@ -70,6 +73,8 @@ public class GameManager : MonoBehaviour
 		_gameOverPanel.color = c;
 		_noteHitArea = GameObject.FindGameObjectWithTag("NoteHitArea");
 		_UIController = GameObject.FindGameObjectWithTag("UIController");
+		_anim = GetComponent<Animator>();
+
 
 		StartCoroutine("ApplyHunger");
 	}
@@ -114,35 +119,37 @@ public class GameManager : MonoBehaviour
 		{
 			RaycastHit hit;
 			var touchedObj = ReturnClickedObject(out hit);
-
-			//if (touchedObj.CompareTag("Player"))
-			//{
-			//	//Set the head position to the mouse position
-			//	_dinoHead.transform.position = new Vector3(0.0f, Camera.main.ScreenToWorldPoint(Input.mousePosition).y,
-			//		Camera.main.ScreenToWorldPoint(Input.mousePosition).z);
-			//}
-
-			foreach (var particleSystem in _bloodSpatters)
+			if (touchedObj != null)
 			{
-				particleSystem.Play();
-			}
 
-			if (touchedObj.CompareTag("Note"))
-			{
-				// check Note position offset from center
-				float points;
-				RectTransform tf = touchedObj.GetComponent<RectTransform>();
-				float x = System.Math.Abs(tf.sizeDelta.x);
-				if (tf.sizeDelta.x / 2 < x)
-					points = -missedNotePenalty;
-				else
+				if (touchedObj.CompareTag("Player"))
 				{
-					if (x == 0)
-						x = 0.001f;
-					points = 1 / mapNumber(x, 0, tf.sizeDelta.x, 0, 1); //remap distance to 0-1
+					_anim.Play(_eatAnimHash);
 				}
-				float percentage = BluesGoal / 100 * points;
-				_UIController.GetComponent<GameUiScript>().IncreaseBlues(percentage); //Punkte von 0-1000
+
+				foreach (var particleSystem in _bloodSpatters)
+				{
+					particleSystem.Play();
+				}
+
+				if (touchedObj.CompareTag("Note"))
+				{
+					// check Note position offset from center
+					float points;
+					RectTransform tf = touchedObj.GetComponent<RectTransform>();
+					float x = System.Math.Abs(tf.sizeDelta.x);
+					if (tf.sizeDelta.x / 2 < x)
+						points = -missedNotePenalty;
+					else
+					{
+						if (x == 0)
+							x = 0.001f;
+						points = 1 / mapNumber(x, 0, tf.sizeDelta.x, 0, 1); //remap distance to 0-1
+					}
+
+					float percentage = BluesGoal / 100 * points;
+					_UIController.GetComponent<GameUiScript>().IncreaseBlues(percentage); //Punkte von 0-1000
+				}
 			}
 		}
 
@@ -154,7 +161,7 @@ public class GameManager : MonoBehaviour
 	{
 		GameObject target = null;
 		Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-		if (Physics.Raycast(ray.origin, ray.direction * 10, out hit))
+		if (Physics.Raycast(ray.origin, ray.direction * 50, out hit))
 		{
 			target = hit.collider.gameObject;
 		}
