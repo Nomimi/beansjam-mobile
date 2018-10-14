@@ -20,6 +20,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4052182946188074}
   - component: {fileID: 212632886196141696}
+  - component: {fileID: 114842024539437582}
   m_Layer: 0
   m_Name: Gruene Note
   m_TagString: Untagged
@@ -35,11 +36,22 @@ Transform:
   m_GameObject: {fileID: 1450371914648386}
   m_LocalRotation: {x: -0, y: -0, z: -0.051304687, w: 0.9986831}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.19999999, y: 0.19999999, z: 1}
+  m_LocalScale: {x: 15, y: 10, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: -5.8820004}
+--- !u!114 &114842024539437582
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1450371914648386}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ff623209c1f7ad84a90423f455e21557, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!212 &212632886196141696
 SpriteRenderer:
   m_ObjectHideFlags: 1
