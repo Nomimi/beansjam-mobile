@@ -41,7 +41,9 @@ public class MeatbahBehavior : MonoBehaviour
 			_nextActionTime += Random.Range(5, 10);
 			if (Random.value < 0.97f)
 			{
-				_navMeshAgent.destination = RandomNavSphere(transform.position, Random.Range(0.5f, 1.5f), -1);
+				_navMeshAgent.destination = _walkSpace.transform.position +
+																		_walkSpace.transform.forward * Random.Range(-1f, 1f) +
+																		_walkSpace.transform.right * Random.Range(-1f, 1f); //RandomNavSphere(transform.position, Random.Range(0.5f, 1.5f), -1);
 			}
 			else
 			{

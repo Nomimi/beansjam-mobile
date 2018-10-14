@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Security.Policy;
 using UnityEngine;
 using UnityEngine.UI;
@@ -36,6 +37,10 @@ public class GameManager : MonoBehaviour
 	private Animator _anim;
 
 	private AudioSource[] _sounds;
+
+	private List<AudioSource> _eatingSounds;
+
+
 
 	#endregion Members
 
@@ -87,6 +92,8 @@ public class GameManager : MonoBehaviour
 
 		_sounds = gameObject.GetComponentsInChildren<AudioSource>();
 
+		_eatingSounds = _sounds.Where(x => x.clip.name.Contains("fressen")).ToList();
+
 		StartCoroutine("ApplyHunger");
 	}
 
@@ -125,10 +132,6 @@ public class GameManager : MonoBehaviour
 
 		if (Input.GetMouseButtonDown(0))
 		{
-			foreach (var particleSystem in _bloodSpatters)
-			{
-				particleSystem.Play();
-			}
 			_anim.Play(_eatAnimHash);
 			RaycastHit hit;
 			var touchedObj = ReturnClickedObject(out hit);
@@ -261,8 +264,8 @@ public class GameManager : MonoBehaviour
 			splat.Play();
 		}
 
-		int rand = Random.Range(0, _sounds.Length);
-		_sounds[rand].Play();
+		int rand = Random.Range(0, _eatingSounds.Count());
+		_eatingSounds[rand].Play();
 
 		// TODO sound
 	}
