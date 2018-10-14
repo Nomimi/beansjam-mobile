@@ -28,11 +28,7 @@ public class GameManager : MonoBehaviour
 
 	private float _nextActionTime = 0.0f;
 
-	private Image _gameOverPanel;
-
 	private ParticleSystem[] _bloodSpatters;
-
-	private Text _gameOverText;
 
 	private Animator _anim;
 
@@ -83,13 +79,6 @@ public class GameManager : MonoBehaviour
 		_meatBags = new List<GameObject>();
 		_spawnArea = GameObject.FindGameObjectWithTag("Spawn");
 
-		// UI stuff
-		_gameOverText = GameObject.FindGameObjectWithTag("GameOverText").GetComponent<Text>();
-		_gameOverText.CrossFadeAlpha(0f, 0f, true);
-		_gameOverPanel = GameObject.FindGameObjectWithTag("GameOverPanel").GetComponent<Image>();
-		Color c = _gameOverPanel.color;
-		c.a = 0;
-		_gameOverPanel.color = c;
 		_UIController = GameObject.FindGameObjectWithTag("UIController");
 
 		_noteHitArea = GameObject.FindGameObjectWithTag("NoteHitArea");
@@ -106,9 +95,9 @@ public class GameManager : MonoBehaviour
 		_eatingSounds = _sounds.Where(x => x.clip.name.Contains("fressen")).ToList();
 		_schnappSounds = _sounds.Where(x => x.clip.name.Contains("schnapp")).ToList();
 
-		_dinoBluesNoInst = _sounds.Single(x => x.clip.name.Contains("DinoBlues_ohne"));
-		_dinoFairNoInst = _sounds.Single(x => x.clip.name.Contains("Dinofair_ohne"));
-		_fressAtackeNoInst = _sounds.Single(x => x.clip.name.Contains("Fressattacke_ohne"));
+		_dinoBluesNoInst = _sounds.Where(x => x.clip.name.Contains("DinoBlues_ohne")).ToList()[0];
+		_dinoFairNoInst = _sounds.Where(x => x.clip.name.Contains("Dinofair_ohne")).ToList()[0];
+		_fressAtackeNoInst = _sounds.Where(x => x.clip.name.Contains("Fressattacke_ohne")).ToList()[0];
 
 		var script = GetComponentInChildren<GameUiScript>();
 		switch (levelvarscripot.LEVEL)
@@ -271,17 +260,6 @@ public class GameManager : MonoBehaviour
 	public void RemoveMeatbag(GameObject meatBag)
 	{
 		_meatBags.Remove(meatBag);
-	}
-
-	IEnumerator TransitionToGameOver()
-	{
-		Color c = _gameOverPanel.color;
-		for (float i = 0f; i <= 2; i += 0.2f)
-		{
-			c.a = i;
-			_gameOverPanel.color = c;
-			yield return new WaitForSeconds(.1f);
-		}
 	}
 
 
