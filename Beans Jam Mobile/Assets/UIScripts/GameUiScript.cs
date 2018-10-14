@@ -31,7 +31,7 @@ public class GameUiScript : MonoBehaviour
 
     public AudioSource songFile;
 
-    struct TimeStamp
+    public struct TimeStamp
     {
         public int min;
         public int sec;
@@ -63,6 +63,14 @@ public class GameUiScript : MonoBehaviour
             res += min * 60000;
             res += sec * 1000;
             res += ms*10;
+            return res;
+        }
+        public float getMillisecondsEnd()
+        {
+            float res = 0;
+            res += minEnd * 60000;
+            res += secEnd * 1000;
+            res += msEnd * 10;
             return res;
         }
         public float deltaTime()
@@ -149,14 +157,19 @@ public class GameUiScript : MonoBehaviour
         }
         //songFile.Play();        
     }
-    private void SpawnNote(float speed, TimeStamp timeStamp)
+    public void SpawnNote(float speed, TimeStamp timeStamp)
     {
         float xpos = noteBackgroundArea.position.x; //if tweeked check update() for time calculation
         float ypos = noteBackgroundArea.position.y;
         float zpos = noteBackgroundArea.position.z;
 
         GameObject thatNote = Instantiate(notePrefab, new Vector3(xpos, ypos, zpos), Quaternion.identity, noteBackgroundArea.transform);
-        thatNote.GetComponent<NoteBehavior>().InitNoteSpeed(speed);
+        float timeOffset = 1;
+        if (timeStamp.hasEnd()) {
+            var dist = timeStamp.deltaTime() * (noteSpeed * Time.deltaTime);
+            timeOffset = dist / (noteSpeed * Time.deltaTime);
+        }
+        thatNote.GetComponent<NoteBehavior>().InitNoteSpeed(speed, timeOffset);
         if (timeStamp.hasEnd()) {
             GameObject thatNoteTrail = Instantiate(noteTrailPrefab, new Vector3(xpos, ypos, zpos), Quaternion.identity, thatNote.transform);
             //hatNoteTrail.GetComponent<RectTransform>().position = new Vector3(xpos, ypos, zpos);

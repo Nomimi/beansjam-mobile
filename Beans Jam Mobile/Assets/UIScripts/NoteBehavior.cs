@@ -8,7 +8,7 @@ public class NoteBehavior : MonoBehaviour
     private float noteSpeed;
     private RectTransform tf;
     bool registeredForDelete = false;
-    float targetTime;
+    float _despawntimeOffset;
 
     // Use this for initialization
     void Start()
@@ -20,27 +20,26 @@ public class NoteBehavior : MonoBehaviour
     void Update()
     {
         tf.position = new Vector3(tf.position.x + (noteSpeed * Time.deltaTime), tf.position.y, tf.position.z);
-        if (registeredForDelete) {
-            targetTime -= Time.deltaTime;
-            if (targetTime <= 0.0f) {
+        if (registeredForDelete && noteSpeed > 0) {
+            _despawntimeOffset -= Time.deltaTime;
+            if (_despawntimeOffset <= 0.0f) {
                 Destroy(gameObject);
             }
         }
-
+        if (registeredForDelete)
+           Debug.Log(gameObject.name + " " + noteSpeed + " " + _despawntimeOffset);
     }
 
-    public void InitNoteSpeed(float speed)
+    public void InitNoteSpeed(float speed, float despawntimeOffset)
     {
         noteSpeed = speed;
+        _despawntimeOffset = despawntimeOffset / 1000;
     }
 
     void OnBecameInvisible()
     {
-        
-        if (gameObject.GetComponentInChildren<Renderer>().isVisible == false) {
-            float targetTime = gameObject.GetComponentsInChildren<RectTransform>()[1].sizeDelta.x * (noteSpeed * Time.deltaTime);
-            registeredForDelete = true;           
-        }
+        registeredForDelete = true;
+        Debug.Log("registered: " +gameObject.name + " " + noteSpeed + " " + _despawntimeOffset);
     }
-    
+
 }
