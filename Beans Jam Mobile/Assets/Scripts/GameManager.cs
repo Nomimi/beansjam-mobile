@@ -162,30 +162,33 @@ public class GameManager : MonoBehaviour
 					int rand = Random.Range(0, _schnappSounds.Count());
 					_schnappSounds[rand].Play();
 				}
-			}
-			_notes = GameObject.FindGameObjectsWithTag("Note");
-			foreach (GameObject note in _notes)
-			{
-				if (ReturnClickedUiObject(note.GetComponent<Image>()))
-				{
-					Debug.Log("note hit!");
-					// check Note position offset from center
-					float points;
-					RectTransform tf = touchedObj.GetComponent<RectTransform>();
-					float x = System.Math.Abs(tf.sizeDelta.x);
-					if (_noteHitArea.GetComponent<RectTransform>().sizeDelta.x / 2 < x)
-						points = -missedNotePenalty;
-					else
-					{
-						if (x.Equals(0))
-						{
-							x = 0.001f;
-						}
-						points = 1 / mapNumber(x, 0, tf.sizeDelta.x, 0, 1) * _meatBags.Count; //remap distance to 0-1
-					}
 
-					float percentage = BluesGoal / 100 * points;
-					_UIController.GetComponent<GameUiScript>().IncreaseBlues(percentage); //Punkte von 0-1000
+				_notes = GameObject.FindGameObjectsWithTag("Note");
+				foreach (GameObject note in _notes)
+				{
+					if (ReturnClickedUiObject(note.GetComponent<Image>()))
+					{
+						Debug.Log("note hit!");
+						// check Note position offset from center
+						float points;
+						float x = System.Math.Abs(touchedObj.transform.position.x);
+						if (_noteHitArea.GetComponent<RectTransform>().sizeDelta.x / 2 < x)
+							points -= missedNotePenalty;
+						else
+						{
+							if (x.Equals(0))
+							{
+								x = 0.001f;
+							}
+							if (_meatBags.Count > 0)
+							points = 1 / mapNumber(x, 0, touchedObj.transform.position.x, 0, 1) * _meatBags.Count; //remap distance to 0-1
+							else
+								points = 1 / mapNumber(x, 0, touchedObj.transform.position.x, 0, 1);
+						}
+
+						float percentage = BluesGoal / 100 * points;
+						_UIController.GetComponent<GameUiScript>().IncreaseBlues(percentage); //Punkte von 0-1000
+					}
 				}
 			}
 		}
@@ -220,7 +223,7 @@ public class GameManager : MonoBehaviour
 	//Method to Return Clicked Ui Object
 	bool ReturnClickedUiObject(Image imgIn)
 	{
-		if (imgIn.Raycast(new Vector2(20, 20), Camera.main))
+		if (imgIn.Raycast(new Vector2(10, 100), Camera.main))
 			return true;
 		return false;
 	}
