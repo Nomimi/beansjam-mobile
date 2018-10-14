@@ -39,7 +39,14 @@ public class GameManager : MonoBehaviour
 	private AudioSource[] _sounds;
 
 	private List<AudioSource> _eatingSounds;
+	private List<AudioSource> _schnappSounds;
 
+	private AudioSource _dinoBlues;
+	private AudioSource _dinoBluesNoInst;
+	private AudioSource _dinoFair;
+	private AudioSource _dinoFairNoInst;
+	private AudioSource _fressAtacke;
+	private AudioSource _fressAtackeNoInst;
 
 
 	#endregion Members
@@ -90,11 +97,24 @@ public class GameManager : MonoBehaviour
 
 		_noteHitArea = GameObject.FindGameObjectWithTag("NoteHitArea");
 
+		SetAllSounds();
+
+		StartCoroutine("ApplyHunger");
+	}
+
+	void SetAllSounds()
+	{
 		_sounds = gameObject.GetComponentsInChildren<AudioSource>();
 
 		_eatingSounds = _sounds.Where(x => x.clip.name.Contains("fressen")).ToList();
+		_schnappSounds = _sounds.Where(x => x.clip.name.Contains("schnapp")).ToList();
 
-		StartCoroutine("ApplyHunger");
+		_dinoBlues = _sounds.Single(x => x.clip.name.Contains("DinoBlues_nur"));
+		_dinoBluesNoInst = _sounds.Single(x => x.clip.name.Contains("DinoBlues_ohne"));
+		_dinoFair = _sounds.Single(x => x.clip.name.Contains("Dinofair_nur"));
+		_dinoFairNoInst = _sounds.Single(x => x.clip.name.Contains("Dinofair_ohne"));
+		_fressAtacke = _sounds.Single(x => x.clip.name.Contains("Fressattacke_nur"));
+		_fressAtackeNoInst = _sounds.Single(x => x.clip.name.Contains("Fressattacke_ohne"));
 	}
 
 	// Update is called once per frame
@@ -140,6 +160,8 @@ public class GameManager : MonoBehaviour
 				if (touchedObj.CompareTag("Player"))
 				{
 					_anim.Play(_eatAnimHash);
+					int rand = Random.Range(0, _schnappSounds.Count());
+					_schnappSounds[rand].Play();
 				}
 			}
 			_notes = GameObject.FindGameObjectsWithTag("Note");
@@ -158,7 +180,7 @@ public class GameManager : MonoBehaviour
 					{
 						if (x == 0)
 							x = 0.001f;
-						points = 1 / mapNumber(x, 0, tf.sizeDelta.x, 0, 1); //remap distance to 0-1
+						points = 1 / mapNumber(x, 0, tf.sizeDelta.x, 0, 1) * _meatBags.Count; //remap distance to 0-1
 					}
 
 					float percentage = BluesGoal / 100 * points;
