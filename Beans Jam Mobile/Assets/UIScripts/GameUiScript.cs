@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class GameUiScript : MonoBehaviour
 {
@@ -36,6 +38,10 @@ public class GameUiScript : MonoBehaviour
 	public float noteSpeed = 20;
 
 	public bool startPlaying = false;
+
+	public bool isClicked;
+
+	private GameObject gameController;
 
 	public struct TimeStamp
 	{
@@ -112,6 +118,8 @@ public class GameUiScript : MonoBehaviour
 	// Use this for initialization
 	void Start()
 	{
+		gameController = GameObject.FindGameObjectWithTag("GameController");
+
 		//DinoBlues Level 1
 		timingsList0 = new Queue<string>(new[] { "0:02:85","0:04:45","0:04:78","0:06:35","0:06:69","0:08:24","0:08:59","0:10:45","0:12:03",
 						"0:12:36","0:13:92","0:14:27","0:15:82","0:16:17","0:18:04","0:18:98","0:19:91","0:20:88","0:21:82","0:22:76","0:23:72","0:24:07",
@@ -171,8 +179,9 @@ public class GameUiScript : MonoBehaviour
 			float width = noteBackgroundArea.sizeDelta.x / 2; // adjust to note spawnpoint
 			float offset = width * (noteSpeed * Time.deltaTime);
 			TimeStamp now = new TimeStamp((Time.time * 1000 + offset) - startTime);
+			now.sec += 1;
 			if (now >= timeStamps.Peek())
-			{
+			{	
 				TimeStamp temp = timeStamps.Dequeue();
 				SpawnNote(temp);
 			}
@@ -192,7 +201,7 @@ public class GameUiScript : MonoBehaviour
 				string[] splitStartStop = timingString.Split('-');
 				string[] splitStopTime = splitStartStop[1].Split(':');
 				crtTimeStamp.minEnd = Int32.Parse(splitStopTime[0]);
-				crtTimeStamp.secEnd = Int32.Parse(splitStopTime[1]);
+				crtTimeStamp.secEnd = Int32.Parse(splitStopTime[1]) ;
 				crtTimeStamp.msEnd = Int32.Parse(splitStopTime[2]);
 				timingString = splitStartStop[0];
 			}
@@ -206,23 +215,24 @@ public class GameUiScript : MonoBehaviour
 	}
 	public void SpawnNote(TimeStamp timeStamp)
 	{
-		float xpos = noteBackgroundArea.position.x; //if tweeked check update() for time calculation
-		float ypos = noteBackgroundArea.position.y;
-		float zpos = noteBackgroundArea.position.z;
+		var vec = new Vector3(-12.82337f, 2.09f, -0.63f); //if tweeked check update() for time calculation
+																											//float ypos = noteBackgroundArea.position.y;
+																											//float zpos = noteBackgroundArea.position.z;
 
 		int rand = UnityEngine.Random.Range(0, 4);
 		GameObject tempprefab = noteList[rand];
-		GameObject thatNote = Instantiate(tempprefab, new Vector3(xpos, ypos, zpos), Quaternion.identity, noteBackgroundArea.transform);
+		GameObject thatNote = Instantiate(tempprefab, vec, new Quaternion());
+		thatNote.transform.Rotate(thatNote.transform.right, 90);
 		float timeOffset = 1;
 		if (timeStamp.hasEnd())
 		{
 			var dist = timeStamp.deltaTime() * (noteSpeed * Time.deltaTime);
 			timeOffset = dist / (noteSpeed * Time.deltaTime);
 		}
-		thatNote.GetComponent<NoteBehavior>().InitNoteSpeed(noteSpeed, timeOffset);
+		thatNote.GetComponent<NoteBehavior>().InitNoteSpeed(noteSpeed, noteSpeed);
 		if (timeStamp.hasEnd())
 		{
-			GameObject thatNoteTrail = Instantiate(noteTrailPrefab, new Vector3(xpos, ypos, zpos), Quaternion.identity, thatNote.transform);
+			GameObject thatNoteTrail = Instantiate(noteTrailPrefab, vec, Quaternion.identity, thatNote.transform);
 			//hatNoteTrail.GetComponent<RectTransform>().position = new Vector3(xpos, ypos, zpos);
 			//thatNoteTrail.GetComponent<NoteBehavior>().InitNoteSpeed(speed);
 			float size = timeStamp.deltaTime() * (noteSpeed * Time.deltaTime); // adjust note trail size
@@ -271,6 +281,11 @@ public class GameUiScript : MonoBehaviour
 
 		bluesBar.sizeDelta = new Vector2(setPercentage * onePercentSize, bluesBar.sizeDelta.y);
 		BluesCurrentPerc = setPercentage;
+	}
+
+	public void SetClicked()
+	{
+		isClicked = true;
 	}
 }
 

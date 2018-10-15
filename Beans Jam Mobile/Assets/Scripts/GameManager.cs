@@ -62,7 +62,12 @@ public class GameManager : MonoBehaviour
 
 	public float MinSpawnTime;
 
+
 	int _eatAnimHash = Animator.StringToHash("Dino_Eat");
+	private AudioSource _dinoBluesInst;
+	private AudioSource _fressAtackeInst;
+	private AudioSource _dinoFairInst;
+	private AudioSource _curTrack;
 
 	#endregion Properties
 
@@ -98,22 +103,33 @@ public class GameManager : MonoBehaviour
 		_dinoFairNoInst = _sounds.Where(x => x.clip.name.Contains("Dinofair_ohne")).ToList()[0];
 		_fressAtackeNoInst = _sounds.Where(x => x.clip.name.Contains("Fressattacke_ohne")).ToList()[0];
 
+		_dinoBluesInst = _sounds.Where(x => x.clip.name.Contains("DinoBlues_nur")).ToList()[0];
+		_dinoFairInst = _sounds.Where(x => x.clip.name.Contains("Dinofair_nur")).ToList()[0];
+		_fressAtackeInst = _sounds.Where(x => x.clip.name.Contains("Fressattacke_nur")).ToList()[0];
+
+
 		var script = GetComponentInChildren<GameUiScript>();
 		switch (levelvarscripot.LEVEL)
 		{
 			case 0:
 				script.TriggerUiScript(levelvarscripot.LEVEL);
+				_curTrack = _dinoBluesInst;
 				_dinoBluesNoInst.Play();
 				break;
 			case 1:
 				script.TriggerUiScript(levelvarscripot.LEVEL);
+				_curTrack = _dinoFairInst;
 				_dinoFairNoInst.Play();
 				break;
 			default:
 				script.TriggerUiScript(2);
+				_curTrack = _fressAtackeInst;
 				_fressAtackeNoInst.Play();
 				break;
 		}
+
+		//_curTrack.volume = 0f;
+		_curTrack.Play();
 	}
 
 	// Update is called once per frame
@@ -151,47 +167,40 @@ public class GameManager : MonoBehaviour
 
 		if (Input.GetMouseButtonDown(0))
 		{
-			_anim.Play(_eatAnimHash);
 			RaycastHit hit;
 			var touchedObj = ReturnClickedObject(out hit);
 			if (touchedObj != null)
 			{
-				if (touchedObj.CompareTag("Player"))
+				if (touchedObj.CompareTag("Player") || touchedObj.CompareTag("Head"))
 				{
 					_anim.Play(_eatAnimHash);
 					int rand = Random.Range(0, _schnappSounds.Count());
 					_schnappSounds[rand].Play();
 				}
-				_notes = GameObject.FindGameObjectsWithTag("Note");
-				foreach (GameObject note in _notes)
+				else if (touchedObj.CompareTag("Note"))
 				{
-					if (ReturnClickedUiObject(note.GetComponent<Image>()))
+					StartCoroutine("PlayInstrument");
+					float points;
+					float x = System.Math.Abs(touchedObj.transform.position.x);
+					if (_noteHitArea.GetComponent<RectTransform>().sizeDelta.x / 2 < x)
+						points = -missedNotePenalty;
+					else
 					{
-						Debug.Log("note hit!");
-						// check Note position offset from center
-						float points;
-						float x = System.Math.Abs(touchedObj.transform.position.x);
-						if (_noteHitArea.GetComponent<RectTransform>().sizeDelta.x / 2 < x)
-							points = -missedNotePenalty;
-						else
+						if (x.Equals(0))
 						{
-							if (x.Equals(0))
-							{
-								x = 0.001f;
-							}
-							if (_meatBags.Count > 0)
-							points = 1 / mapNumber(x, 0, touchedObj.transform.position.x, 0, 1) * _meatBags.Count; //remap distance to 0-1
-							else
-								points = 1 / mapNumber(x, 0, touchedObj.transform.position.x, 0, 1);
+							x = 0.001f;
 						}
-
-						float percentage = BluesGoal / 100 * points;
-						_UIController.GetComponent<GameUiScript>().IncreaseBlues(percentage); //Punkte von 0-1000
+						if (_meatBags.Count > 0)
+							points = 1 / mapNumber(x, 0, touchedObj.transform.position.x, 0, 1) * _meatBags.Count; //remap distance to 0-1
+						else
+							points = 1 / mapNumber(x, 0, touchedObj.transform.position.x, 0, 1);
 					}
+
+					float percentage = BluesGoal / 100 * points;
+					_UIController.GetComponent<GameUiScript>().IncreaseBlues(percentage); //Punkte von 0-1000
 				}
 			}
 		}
-
 		#endregion InputHandling
 	}
 
@@ -281,8 +290,13 @@ public class GameManager : MonoBehaviour
 		_eatingSounds[rand].Play();
 	}
 
-	public void HandleNoteClick(GameObject note)
+	IEnumerator PlayInstrument()
 	{
-
+		_curTrack.volume = 1;
+		for (int i = 0; i < 1; i++)
+		{
+			yield return new WaitForSeconds(1f);
+		}
+		//_curTrack.volume = 0;
 	}
 }
