@@ -162,7 +162,6 @@ public class GameManager : MonoBehaviour
 					int rand = Random.Range(0, _schnappSounds.Count());
 					_schnappSounds[rand].Play();
 				}
-
 				_notes = GameObject.FindGameObjectsWithTag("Note");
 				foreach (GameObject note in _notes)
 				{
@@ -173,7 +172,7 @@ public class GameManager : MonoBehaviour
 						float points;
 						float x = System.Math.Abs(touchedObj.transform.position.x);
 						if (_noteHitArea.GetComponent<RectTransform>().sizeDelta.x / 2 < x)
-							points -= missedNotePenalty;
+							points = -missedNotePenalty;
 						else
 						{
 							if (x.Equals(0))
@@ -280,7 +279,10 @@ public class GameManager : MonoBehaviour
 
 		int rand = Random.Range(0, _eatingSounds.Count());
 		_eatingSounds[rand].Play();
+	}
 
-		// TODO sound
+	public void HandleNoteClick(GameObject note)
+	{
+
 	}
 }
