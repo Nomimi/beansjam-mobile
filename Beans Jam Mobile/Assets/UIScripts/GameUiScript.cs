@@ -1,9 +1,12 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Threading;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using Random = UnityEngine.Random;
 
 public class GameUiScript : MonoBehaviour
 {
@@ -45,6 +48,7 @@ public class GameUiScript : MonoBehaviour
 
 	public struct TimeStamp
 	{
+
 		public int min;
 		public int sec;
 		public int ms;
@@ -115,6 +119,10 @@ public class GameUiScript : MonoBehaviour
 		}
 	}
 
+	private double _timeOffsetMilliseconds;
+	private float _dist;
+	private Stopwatch _timer;
+
 	// Use this for initialization
 	void Start()
 	{
@@ -149,14 +157,11 @@ public class GameUiScript : MonoBehaviour
 		noteList.Add(notePrefab3);
 		noteList.Add(notePrefab4);
 
-		//energyBar = GameObject.FindGameObjectWithTag("EnergyBar").GetComponent<RectTransform>();
-		//bluesBar = GameObject.FindGameObjectWithTag("BluesBar").GetComponent<RectTransform>();
-		//barContainer = GameObject.FindGameObjectWithTag("BarContainer").GetComponent<RectTransform>();
-		//noteAcceptanceArea = GameObject.FindGameObjectWithTag("NoteHitArea").GetComponent<RectTransform>();
-		//noteBackgroundArea = GameObject.FindGameObjectWithTag("NoteBackground").GetComponent<RectTransform>();
-
 		float PercentageBarMaxWidth = barContainer.sizeDelta.x;
 		onePercentSize = (PercentageBarMaxWidth / 100f);
+
+		_dist = Vector3.Distance(new Vector3(-6.38f/* - .95f /* Half of sprite */, 2f, 1.05f), new Vector3(-1f, 2f, 1f));
+		_timeOffsetMilliseconds = _dist / noteSpeed * 1000;
 
 		setBluesPercentage(10);
 	}
@@ -176,20 +181,20 @@ public class GameUiScript : MonoBehaviour
 	{
 		if (timeStamps.Count > 0)
 		{
-			float width = noteBackgroundArea.sizeDelta.x / 2; // adjust to note spawnpoint
-			float offset = width * (noteSpeed * Time.deltaTime);
-			TimeStamp now = new TimeStamp((Time.time * 1000 + offset) - startTime);
-			now.sec += 1;
-			if (now >= timeStamps.Peek())
-			{	
+			if (_timer.ElapsedMilliseconds + _timeOffsetMilliseconds >= timeStamps.Peek().getMilliseconds())
+			{
 				TimeStamp temp = timeStamps.Dequeue();
 				SpawnNote(temp);
 			}
 		}
+		else
+		{
+			SceneManager.LoadScene(3);
+			//GameObject.FindGameObjectWithTag("GameController").GetComponent<GameManager>().SetGameActive(false);
+		}
 	}
 	public void spawnRythm(Queue<string> rythmQueue)
 	{
-		startTime = Time.time * 1000;
 		Queue<string> timingsListtemp = new Queue<string>(rythmQueue);
 		while (timingsListtemp.Count > 0)
 		{
@@ -201,7 +206,7 @@ public class GameUiScript : MonoBehaviour
 				string[] splitStartStop = timingString.Split('-');
 				string[] splitStopTime = splitStartStop[1].Split(':');
 				crtTimeStamp.minEnd = Int32.Parse(splitStopTime[0]);
-				crtTimeStamp.secEnd = Int32.Parse(splitStopTime[1]) ;
+				crtTimeStamp.secEnd = Int32.Parse(splitStopTime[1]);
 				crtTimeStamp.msEnd = Int32.Parse(splitStopTime[2]);
 				timingString = splitStartStop[0];
 			}
@@ -211,15 +216,19 @@ public class GameUiScript : MonoBehaviour
 			crtTimeStamp.ms = Int32.Parse(splitTime[2]);
 			timeStamps.Enqueue(crtTimeStamp);
 		}
+
+		_timer = new Stopwatch();
+		_timer.Start();
 		startPlaying = true;
 	}
+
 	public void SpawnNote(TimeStamp timeStamp)
 	{
-		var vec = new Vector3(-12.82337f, 2.09f, -0.63f); //if tweeked check update() for time calculation
-																											//float ypos = noteBackgroundArea.position.y;
-																											//float zpos = noteBackgroundArea.position.z;
+		var vec = new Vector3(-6.38f, 2f, -1.05f); //if tweeked check update() for time calculation
+																							 //float ypos = noteBackgroundArea.position.y;
+																							 //float zpos = noteBackgroundArea.position.z;
 
-		int rand = UnityEngine.Random.Range(0, 4);
+		int rand = Random.Range(0, 4);
 		GameObject tempprefab = noteList[rand];
 		GameObject thatNote = Instantiate(tempprefab, vec, new Quaternion());
 		thatNote.transform.Rotate(thatNote.transform.right, 90);
@@ -229,7 +238,7 @@ public class GameUiScript : MonoBehaviour
 			var dist = timeStamp.deltaTime() * (noteSpeed * Time.deltaTime);
 			timeOffset = dist / (noteSpeed * Time.deltaTime);
 		}
-		thatNote.GetComponent<NoteBehavior>().InitNoteSpeed(noteSpeed, noteSpeed);
+		thatNote.GetComponent<NoteBehavior>().InitNoteSpeed(noteSpeed, timeOffset);
 		if (timeStamp.hasEnd())
 		{
 			GameObject thatNoteTrail = Instantiate(noteTrailPrefab, vec, Quaternion.identity, thatNote.transform);

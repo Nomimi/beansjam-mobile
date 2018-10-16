@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Policy;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
@@ -52,7 +53,7 @@ public class GameManager : MonoBehaviour
 
 	public int BluesGoal;
 
-	public bool Running;
+	public bool Running = true;
 
 	public float missedNotePenalty;
 
@@ -128,13 +129,18 @@ public class GameManager : MonoBehaviour
 				break;
 		}
 
-		//_curTrack.volume = 0f;
+		_curTrack.volume = 0.5f;
 		_curTrack.Play();
 	}
 
 	// Update is called once per frame
 	void Update()
 	{
+		if (!Running || Saturation <= 0)
+		{
+			SceneManager.LoadScene(2);
+		}
+
 		#region Meatbag creation
 
 		//var creationProbability = Blues * MeatbagSpawnRate; // Note: * random?
@@ -152,18 +158,18 @@ public class GameManager : MonoBehaviour
 
 		#region InputHandling
 
-		if (Input.touchCount > 0)
-		{
-			foreach (var touch in Input.touches)
-			{
-				RaycastHit hit;
-				var touchedObj = ReturnClickedObject(touch, out hit);
+		//if (Input.touchCount > 0)
+		//{
+		//	foreach (var touch in Input.touches)
+		//	{
+		//		RaycastHit hit;
+		//		var touchedObj = ReturnClickedObject(touch, out hit);
 
-				if (touchedObj.CompareTag("Player"))
-				{
-				}
-			}
-		}
+		//		if (touchedObj.CompareTag("Player"))
+		//		{
+		//		}
+		//	}
+		//}
 
 		if (Input.GetMouseButtonDown(0))
 		{
@@ -176,6 +182,7 @@ public class GameManager : MonoBehaviour
 					_anim.Play(_eatAnimHash);
 					int rand = Random.Range(0, _schnappSounds.Count());
 					_schnappSounds[rand].Play();
+					_UIController.GetComponent<GameUiScript>().IncreaseEnergy(Saturation);
 				}
 				else if (touchedObj.CompareTag("Note"))
 				{
@@ -190,10 +197,12 @@ public class GameManager : MonoBehaviour
 						{
 							x = 0.001f;
 						}
-						if (_meatBags.Count > 0)
-							points = 1 / mapNumber(x, 0, touchedObj.transform.position.x, 0, 1) * _meatBags.Count; //remap distance to 0-1
-						else
-							points = 1 / mapNumber(x, 0, touchedObj.transform.position.x, 0, 1);
+						// TODO
+						//if (_meatBags.Count > 0)
+						//	points = 1 / mapNumber(x, 0, touchedObj.transform.position.x, 0, 1) * _meatBags.Count; //remap distance to 0-1
+						//else
+						//	points = 1 / mapNumber(x, 0, touchedObj.transform.position.x, 0, 1);
+						points = _meatBags.Count;
 					}
 
 					float percentage = BluesGoal / 100 * points;
@@ -293,10 +302,17 @@ public class GameManager : MonoBehaviour
 	IEnumerator PlayInstrument()
 	{
 		_curTrack.volume = 1;
-		for (int i = 0; i < 1; i++)
+		for (int i = 0; i < 6; i++)
 		{
-			yield return new WaitForSeconds(1f);
+			_curTrack.volume -= 0.1f;
+			yield return new WaitForSeconds(0.1f);
+
 		}
-		//_curTrack.volume = 0;
+
+	}
+
+	public void SetGameActive(bool b)
+	{
+		Running = false;
 	}
 }

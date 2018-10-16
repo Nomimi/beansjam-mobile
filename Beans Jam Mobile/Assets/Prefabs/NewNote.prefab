@@ -38,6 +38,7 @@ GameObject:
   - component: {fileID: 33049594863445284}
   - component: {fileID: 64671066761499956}
   - component: {fileID: 114694034102494544}
+  - component: {fileID: 65315747728768648}
   m_Layer: 0
   m_Name: NewNote
   m_TagString: Note
@@ -65,8 +66,8 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1918574088628626}
   m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: -14.244717, y: 1.99, z: 1.05}
-  m_LocalScale: {x: 0.12191038, y: 0.22681, z: 0.124745496}
+  m_LocalPosition: {x: -6.38, y: 2, z: 1}
+  m_LocalScale: {x: 0.18815649, y: 0.35005856, z: 0.1925322}
   m_Children:
   - {fileID: 4194398741347978}
   m_Father: {fileID: 0}
@@ -93,6 +94,18 @@ MeshCollider:
   m_CookingOptions: 14
   m_SkinWidth: 0.01
   m_Mesh: {fileID: 10209, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!65 &65315747728768648
+BoxCollider:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1918574088628626}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 18.376568, y: 1, z: 13.344104}
+  m_Center: {x: 1.5003858, y: -3.7551618e-17, z: 0.23869571}
 --- !u!114 &114694034102494544
 MonoBehaviour:
   m_ObjectHideFlags: 1

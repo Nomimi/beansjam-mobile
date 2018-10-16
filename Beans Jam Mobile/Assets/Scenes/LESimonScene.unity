@@ -1856,15 +1856,15 @@ Prefab:
     m_Modifications:
     - target: {fileID: 4498392761049952, guid: c5b65cdae9da2e047b13bb7ccbbfa3b4, type: 2}
       propertyPath: m_LocalPosition.x
-      value: -14.244717
+      value: -6.38
       objectReference: {fileID: 0}
     - target: {fileID: 4498392761049952, guid: c5b65cdae9da2e047b13bb7ccbbfa3b4, type: 2}
       propertyPath: m_LocalPosition.y
-      value: 1.99
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 4498392761049952, guid: c5b65cdae9da2e047b13bb7ccbbfa3b4, type: 2}
       propertyPath: m_LocalPosition.z
-      value: 1.05
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4498392761049952, guid: c5b65cdae9da2e047b13bb7ccbbfa3b4, type: 2}
       propertyPath: m_LocalRotation.x
@@ -2238,8 +2238,8 @@ MonoBehaviour:
   noteList: []
   SetEnergyBarFillPercentage: 100
   SetBluesBarFillPercentage: 10
-  noteSpeed: 20
-  startPlaying: 0
+  noteSpeed: 5
+  startPlaying: 1
   isClicked: 0
 --- !u!1 &415067523
 GameObject:
@@ -2584,7 +2584,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 11865a53315d824498c4da659cb8329c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Hunger: 0.1
+  Hunger: 0.06
   Saturation: 100
   Blues: 50
   BluesGoal: 150
@@ -4053,7 +4053,7 @@ Prefab:
     m_Modifications:
     - target: {fileID: 4895146178361878, guid: bbe3f21495552a24bb1386418b7de7a7, type: 2}
       propertyPath: m_LocalPosition.x
-      value: -0.07
+      value: -0.96
       objectReference: {fileID: 0}
     - target: {fileID: 4895146178361878, guid: bbe3f21495552a24bb1386418b7de7a7, type: 2}
       propertyPath: m_LocalPosition.y

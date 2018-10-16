@@ -11,4 +11,10 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/LESimonScene.unity
     guid: 8f794619c76bc474d98ba25550efda6d
+  - enabled: 1
+    path: Assets/Scenes/GameOverScene.unity
+    guid: 2a275f0df1c590d459216a6bc45bbe90
+  - enabled: 1
+    path: Assets/Scenes/GameWon.unity
+    guid: ef6705e5ad823d54aa7a8f0e644f2eef
   m_configObjects: {}
