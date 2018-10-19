@@ -217,6 +217,8 @@ public class GameManager : MonoBehaviour
 
 					float percentage = BluesGoal / 100 * points;
 					_UIController.GetComponent<GameUiScript>().IncreaseBlues(percentage); //Punkte von 0-1000
+
+                    Destroy(touchedObj.gameObject);
 				}
 			}
 		}
