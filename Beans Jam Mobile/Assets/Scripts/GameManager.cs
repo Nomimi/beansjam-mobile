@@ -32,6 +32,7 @@ public class GameManager : MonoBehaviour
 	private ParticleSystem[] _bloodSpatters;
 
 	private Animator _anim;
+    private Animator _animCrowd;
 
 	private AudioSource[] _sounds;
 
@@ -79,6 +80,7 @@ public class GameManager : MonoBehaviour
 		_dino = GameObject.FindGameObjectWithTag("Player");
 		_bloodSpatters = _dino.GetComponentsInChildren<ParticleSystem>();
 		_anim = _dino.GetComponent<Animator>();
+        
 
 		// other GameObjects
 		_meatBags = new List<GameObject>();
@@ -180,6 +182,14 @@ public class GameManager : MonoBehaviour
 				if (touchedObj.CompareTag("Player") || touchedObj.CompareTag("Head"))
 				{
 					_anim.Play(_eatAnimHash);
+                    
+                        foreach (GameObject _crowd in _meatBags)
+                    {
+                        _animCrowd = _crowd.GetComponentInChildren<Animator>();
+                        _animCrowd.Play(Animator.StringToHash("People_gefressenwerden"));
+
+                    }
+                 
 					int rand = Random.Range(0, _schnappSounds.Count());
 					_schnappSounds[rand].Play();
 					_UIController.GetComponent<GameUiScript>().IncreaseEnergy(Saturation);
