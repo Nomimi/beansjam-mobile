@@ -1890,6 +1890,16 @@ Prefab:
       propertyPath: m_Name
       value: NewNote (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 65315747728768648, guid: c5b65cdae9da2e047b13bb7ccbbfa3b4,
+        type: 2}
+      propertyPath: m_Size.x
+      value: 13.738794
+      objectReference: {fileID: 0}
+    - target: {fileID: 65315747728768648, guid: c5b65cdae9da2e047b13bb7ccbbfa3b4,
+        type: 2}
+      propertyPath: m_Center.x
+      value: 0.044355858
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c5b65cdae9da2e047b13bb7ccbbfa3b4, type: 2}
   m_IsPrefabAsset: 0
